@@ -10,28 +10,38 @@ import (
 )
 
 var sampleConfig = `# %s configuration file
----
-# Sample cluster configurations:
-# Uncomment and edit the following lines to provide the kubeconfig paths
-# for your clusters.
-# clusters:
-#   hub:
-#     kubeconfigpath: /kubeconfigs/hub
-#   c1:
-#     kubeconfigpath: /kubeconfigs/c1
-#   c2:
-#     kubeconfigpath: /kubeconfigs/c2
 
-# List of PVC specifications for workloads.
-# These define storage configurations, such as 'storageClassName' and
-# 'accessModes', and are used to kustomize workloads.
+# Clusters configurations - modify to match your clusters.
+clusters:
+  hub:
+    kubeconfigpath: hub.kubeconfig			# Add hub cluster kubeconfig
+  c1:
+    kubeconfigpath: primary.kubeconfig		# Add primary managed cluster kubeconfig
+  c2:
+    kubeconfigpath: secondary.kubeconfig	# Add secondary managed cluster kubeconfig
+
+# DRPolicy - modify to match your actual DRPolicy
+dr-policy: dr-policy
+
+# ClusterSet - modify to match your Open Cluster Management configuration.
+clusterset: default
+
+# PVC specifications - modify to match your storage.
 pvcspecs:
 - name: rbd
-  storageclassname: rook-ceph-block
+  storageclassname: rook-ceph-block			# Add rbd storage class name
   accessmodes: ReadWriteOnce
 - name: cephfs
-  storageclassname: rook-cephfs-fs1
+  storageclassname: rook-cephfs-fs1			# Add cephfs storage class name
   accessmodes: ReadWriteMany
+
+# Tests to run - modify for your use case.
+# Available workloads: "deploy"
+# Available deployers: "appset", "subscr", "disapp"
+tests:
+- workload: deploy
+  deployer: appset
+  pvcspec: rbd
 `
 
 func CreateSampleConfig(filename, creator string) error {
