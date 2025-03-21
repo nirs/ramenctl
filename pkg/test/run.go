@@ -3,6 +3,8 @@
 
 package test
 
+import "sync"
+
 func Run(configFile string, outputDir string) error {
 	cmd, err := newCommand("test-run", configFile, outputDir)
 	if err != nil {
@@ -15,9 +17,18 @@ func Run(configFile string, outputDir string) error {
 		return cmd.Failed()
 	}
 
-	// We want to run all tests in parallel, but for now lets run one test.
-	test := newTest(cmd.Config.Tests[0], cmd)
-	if !cmd.RunTest(test) {
+	var wg sync.WaitGroup
+	for _, tc := range cmd.Config.Tests {
+		test := newTest(tc, cmd)
+		wg.Add(1)
+		go func() {
+			cmd.RunTest(test)
+			wg.Done()
+		}()
+	}
+	wg.Wait()
+
+	if cmd.IsFailed() {
 		return cmd.Failed()
 	}
 

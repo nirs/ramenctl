@@ -110,6 +110,12 @@ func (c *Command) CleanTest(test *Test) bool {
 	return true
 }
 
+func (c *Command) IsFailed() bool {
+	c.mutex.Lock()
+	defer c.mutex.Unlock()
+	return c.Report.Status == Failed
+}
+
 func (c *Command) Failed() error {
 	if err := c.WriteReport(c.Report); err != nil {
 		console.Error(err)
