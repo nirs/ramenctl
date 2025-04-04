@@ -22,13 +22,13 @@ architecture and install in the PATH.
 To install the latest release on Linux and macOS, run:
 
 ```console
-tag="$(curl -fsSL https://api.github.com/repos/ramendr/ramenctl/releases/latest | jq -r .tag_name)"
+tag="$(curl -fsSL https://api.github.com/repos/nirs/ramenctl/releases/latest | jq -r .tag_name)"
 os="$(uname | tr '[:upper:]' '[:lower:]')"
 machine="$(uname -m)"
 if [ "$machine" = "aarch64" ]; then machine="arm64"; fi
 if [ "$machine" = "x86_64" ]; then machine="amd64"; fi
 curl --location --fail --silent --show-error --output ramenctl \
-    https://github.com/ramendr/ramenctl/releases/download/$tag/ramenctl-$tag-$os-$machine
+    https://github.com/nirs/ramenctl/releases/download/$tag/ramenctl-$tag-$os-$machine
 sudo install ramenctl /usr/local/bin/
 rm ramenctl
 ```
