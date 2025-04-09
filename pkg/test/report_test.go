@@ -113,6 +113,11 @@ func TestReportRunTestFailed(t *testing.T) {
 			PVCSpec:  "rbd",
 		},
 		Status: Failed,
+		Steps: []*Step{
+			{Name: "deploy", Status: Passed},
+			{Name: "protect", Status: Passed},
+			{Name: "failover", Status: Failed},
+		},
 	}
 	r.AddTest(failedTest)
 	if r.Status != Failed {
@@ -127,6 +132,14 @@ func TestReportRunTestFailed(t *testing.T) {
 			PVCSpec:  "cephfs",
 		},
 		Status: Passed,
+		Steps: []*Step{
+			{Name: "deploy", Status: Passed},
+			{Name: "protect", Status: Passed},
+			{Name: "failover", Status: Passed},
+			{Name: "relocate", Status: Passed},
+			{Name: "unprotect", Status: Passed},
+			{Name: "undeploy", Status: Passed},
+		},
 	}
 	r.AddTest(passedTest)
 	if r.Status != Failed {
@@ -160,6 +173,7 @@ func TestReportRunTestFailed(t *testing.T) {
 		Name:   failedTest.Name(),
 		Config: failedTest.Config,
 		Status: failedTest.Status,
+		Items:  failedTest.Steps,
 	}
 	if !reflect.DeepEqual(tests.Items[0], failedResult) {
 		t.Errorf("expected result %+v, got %+v", failedResult, tests.Items[0])
@@ -169,6 +183,7 @@ func TestReportRunTestFailed(t *testing.T) {
 		Name:   passedTest.Name(),
 		Config: passedTest.Config,
 		Status: passedTest.Status,
+		Items:  passedTest.Steps,
 	}
 	if !reflect.DeepEqual(tests.Items[1], passedResult) {
 		t.Errorf("expected result %+v, got %+v", passedResult, tests.Items[1])
@@ -201,6 +216,14 @@ func TestReportRunAllPassed(t *testing.T) {
 			PVCSpec:  "rbd",
 		},
 		Status: Passed,
+		Steps: []*Step{
+			{Name: "deploy", Status: Passed},
+			{Name: "protect", Status: Passed},
+			{Name: "failover", Status: Passed},
+			{Name: "relocate", Status: Passed},
+			{Name: "unprotect", Status: Passed},
+			{Name: "undeploy", Status: Passed},
+		},
 	}
 	r.AddTest(rbdTest)
 	if r.Status != Passed {
@@ -215,6 +238,14 @@ func TestReportRunAllPassed(t *testing.T) {
 			PVCSpec:  "cephfs",
 		},
 		Status: Passed,
+		Steps: []*Step{
+			{Name: "deploy", Status: Passed},
+			{Name: "protect", Status: Passed},
+			{Name: "failover", Status: Passed},
+			{Name: "relocate", Status: Passed},
+			{Name: "unprotect", Status: Passed},
+			{Name: "undeploy", Status: Passed},
+		},
 	}
 	r.AddTest(cephfsTest)
 	if r.Status != Passed {
@@ -249,6 +280,7 @@ func TestReportRunAllPassed(t *testing.T) {
 		Name:   rbdTest.Name(),
 		Config: rbdTest.Config,
 		Status: rbdTest.Status,
+		Items:  rbdTest.Steps,
 	}
 	if !reflect.DeepEqual(tests.Items[0], rbdResult) {
 		t.Errorf("expected result %+v, got %+v", rbdResult, tests.Items[0])
@@ -258,6 +290,7 @@ func TestReportRunAllPassed(t *testing.T) {
 		Name:   cephfsTest.Name(),
 		Config: cephfsTest.Config,
 		Status: cephfsTest.Status,
+		Items:  cephfsTest.Steps,
 	}
 	if !reflect.DeepEqual(tests.Items[1], cephfsResult) {
 		t.Errorf("expected result %+v, got %+v", rbdResult, tests.Items[1])
@@ -284,6 +317,10 @@ func TestReportCleanTestFailed(t *testing.T) {
 			PVCSpec:  "rbd",
 		},
 		Status: Passed,
+		Steps: []*Step{
+			{Name: "unprotect", Status: Passed},
+			{Name: "undeploy", Status: Passed},
+		},
 	}
 	r.AddTest(rbdTest)
 	if r.Status != Passed {
@@ -298,6 +335,9 @@ func TestReportCleanTestFailed(t *testing.T) {
 			PVCSpec:  "cephfs",
 		},
 		Status: Failed,
+		Steps: []*Step{
+			{Name: "unprotect", Status: Failed},
+		},
 	}
 	r.AddTest(cephfsTest)
 	if r.Status != Failed {
@@ -327,6 +367,7 @@ func TestReportCleanTestFailed(t *testing.T) {
 		Name:   rbdTest.Name(),
 		Config: rbdTest.Config,
 		Status: rbdTest.Status,
+		Items:  rbdTest.Steps,
 	}
 	if !reflect.DeepEqual(tests.Items[0], rbdResult) {
 		t.Errorf("expected result %+v, got %+v", rbdResult, tests.Items[0])
@@ -336,6 +377,7 @@ func TestReportCleanTestFailed(t *testing.T) {
 		Name:   cephfsTest.Name(),
 		Config: cephfsTest.Config,
 		Status: cephfsTest.Status,
+		Items:  cephfsTest.Steps,
 	}
 	if !reflect.DeepEqual(tests.Items[1], cephfsResult) {
 		t.Errorf("expected result %+v, got %+v", cephfsResult, tests.Items[1])
@@ -362,6 +404,10 @@ func TestReportCleanFailed(t *testing.T) {
 			PVCSpec:  "rbd",
 		},
 		Status: Passed,
+		Steps: []*Step{
+			{Name: "unprotect", Status: Passed},
+			{Name: "undeploy", Status: Passed},
+		},
 	}
 	r.AddTest(rbdTest)
 	if r.Status != Passed {
@@ -416,6 +462,10 @@ func TestReportCleanAllPassed(t *testing.T) {
 			PVCSpec:  "rbd",
 		},
 		Status: Passed,
+		Steps: []*Step{
+			{Name: "unprotect", Status: Passed},
+			{Name: "undeploy", Status: Passed},
+		},
 	}
 	r.AddTest(rbdTest)
 	if r.Status != Passed {
@@ -430,6 +480,10 @@ func TestReportCleanAllPassed(t *testing.T) {
 			PVCSpec:  "cephfs",
 		},
 		Status: Passed,
+		Steps: []*Step{
+			{Name: "unprotect", Status: Passed},
+			{Name: "undeploy", Status: Passed},
+		},
 	}
 	r.AddTest(cephfsTest)
 	if r.Status != Passed {
@@ -465,6 +519,7 @@ func TestReportCleanAllPassed(t *testing.T) {
 		Name:   rbdTest.Name(),
 		Config: rbdTest.Config,
 		Status: rbdTest.Status,
+		Items:  rbdTest.Steps,
 	}
 	if !reflect.DeepEqual(tests.Items[0], rbdResult) {
 		t.Errorf("expected result %+v, got %+v", rbdResult, tests.Items[0])
@@ -474,6 +529,7 @@ func TestReportCleanAllPassed(t *testing.T) {
 		Name:   cephfsTest.Name(),
 		Config: cephfsTest.Config,
 		Status: cephfsTest.Status,
+		Items:  cephfsTest.Steps,
 	}
 	if !reflect.DeepEqual(tests.Items[1], cephfsResult) {
 		t.Errorf("expected result %+v, got %+v", cephfsResult, tests.Items[1])
