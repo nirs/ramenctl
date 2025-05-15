@@ -51,7 +51,7 @@ func gatherCluster(
 	start := time.Now()
 	log.Infof("Gather namespaces from cluster %q", cluster.Name)
 
-	config, err := restConfig(cluster.Kubeconfig)
+	config, err := restConfig(cluster)
 	if err != nil {
 		return err
 	}
@@ -78,11 +78,17 @@ func gatherCluster(
 	return nil
 }
 
-func restConfig(kubeconfig string) (*rest.Config, error) {
-	config, err := clientcmd.LoadFromFile(kubeconfig)
+func restConfig(cluster *types.Cluster) (*rest.Config, error) {
+	config, err := clientcmd.LoadFromFile(cluster.Kubeconfig)
 	if err != nil {
 		return nil, err
 	}
 
-	return clientcmd.NewNonInteractiveClientConfig(*config, "", nil, nil).ClientConfig()
+	if config.CurrentContext != cluster.Name {
+		config.Contexts[cluster.Name] = config.Contexts[config.CurrentContext]
+		delete(config.Contexts, config.CurrentContext)
+		config.CurrentContext = cluster.Name
+	}
+
+	return clientcmd.NewNonInteractiveClientConfig(*config, cluster.Name, nil, nil).ClientConfig()
 }
