@@ -41,7 +41,7 @@ func CreateSampleConfig(filename, commandName, envFile string) error {
 	return nil
 }
 
-func ReadConfig(filename string) (*config.Config, error) {
+func ReadTestConfig(filename string) (*config.Config, error) {
 	options := config.Options{
 		Workloads: workloads.AvailableNames(),
 		Deployers: deployers.AvailableNames(),
