@@ -33,8 +33,8 @@ type Options struct {
 
 // Command is a ramenctl test command.
 type Command struct {
-	// Command is the generic command used by all ramenctl commands.
-	command *command.Command
+	// command is the base command used by all ramenctl commands.
+	command *command.Base
 
 	// config is the test config for this command.
 	config *e2econfig.Config
@@ -72,7 +72,7 @@ var _ types.Context = &Command{}
 type flowFunc func(t *Test)
 
 // newCommand return a new test command.
-func newCommand(cmd *command.Command, cfg *e2econfig.Config, backend e2e.Testing, options Options) *Command {
+func newCommand(cmd *command.Base, cfg *e2econfig.Config, backend e2e.Testing, options Options) *Command {
 	// This is not user configurable. We use the same prefix for all namespaces created by the test.
 	cfg.Channel.Namespace = namespacePrefix + "gitops"
 

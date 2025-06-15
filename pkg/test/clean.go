@@ -17,7 +17,7 @@ func Clean(configFile string, outputDir string) error {
 	}
 	console.Info("Using config %q", configFile)
 
-	cmd, err := command.New("test-clean", cfg.Clusters, outputDir)
+	cmd, err := command.NewBase("test-clean", cfg.Clusters, outputDir)
 	if err != nil {
 		return err
 	}

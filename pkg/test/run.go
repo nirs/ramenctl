@@ -17,7 +17,7 @@ func Run(configFile string, outputDir string) error {
 	}
 	console.Info("Using config %q", configFile)
 
-	cmd, err := command.New("test-run", cfg.Clusters, outputDir)
+	cmd, err := command.NewBase("test-run", cfg.Clusters, outputDir)
 	if err != nil {
 		return err
 	}

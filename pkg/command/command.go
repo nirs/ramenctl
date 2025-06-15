@@ -21,9 +21,9 @@ import (
 	"github.com/ramendr/ramenctl/pkg/console"
 )
 
-// Command is a ramenctl generic command used by all ramenctl commands. Note that the config is not
+// Base is a ramenctl generic command used by all ramenctl commands. Note that the config is not
 // part of the commnad since test commands use extended configuraton.
-type Command struct {
+type Base struct {
 	// name is the command name (e.g. "test-run")
 	name string
 
@@ -42,9 +42,9 @@ type Command struct {
 	stop    context.CancelFunc
 }
 
-// New creates a new command handling os.Interrupt signal. To close the log and stop the signal
-// handler call Close().
-func New(commandName string, clusters map[string]e2econfig.Cluster, outputDir string) (*Command, error) {
+// NewBase creates a new base command handling os.Interrupt signal. To close the log and stop the
+// signal handler call Close().
+func NewBase(commandName string, clusters map[string]e2econfig.Cluster, outputDir string) (*Base, error) {
 	// Create the logger first so we can log early command errors to the command log.
 	log, closeLog, err := newLogger(outputDir, commandName+".log")
 	if err != nil {
@@ -66,7 +66,7 @@ func New(commandName string, clusters map[string]e2econfig.Cluster, outputDir st
 		return nil, err
 	}
 
-	return &Command{
+	return &Base{
 		name:      commandName,
 		outputDir: outputDir,
 		env:       env,
@@ -83,12 +83,12 @@ func ForTest(
 	commandName string,
 	env *types.Env,
 	outputDir string,
-) (*Command, error) {
+) (*Base, error) {
 	log, closeLog, err := newLogger(outputDir, commandName+".log")
 	if err != nil {
 		return nil, fmt.Errorf("failed to create logger: %w", err)
 	}
-	return &Command{
+	return &Base{
 		name:      commandName,
 		outputDir: outputDir,
 		env:       env,
@@ -98,29 +98,29 @@ func ForTest(
 	}, nil
 }
 
-func (c *Command) Name() string {
+func (c *Base) Name() string {
 	return c.name
 }
 
-func (c *Command) OutputDir() string {
+func (c *Base) OutputDir() string {
 	return c.outputDir
 }
 
-func (c *Command) Logger() *zap.SugaredLogger {
+func (c *Base) Logger() *zap.SugaredLogger {
 	return c.log
 }
 
-func (c *Command) Env() *types.Env {
+func (c *Base) Env() *types.Env {
 	return c.env
 }
 
-func (c *Command) Context() context.Context {
+func (c *Base) Context() context.Context {
 	return c.context
 }
 
 // WithTimeout returns a derived command with a deadline. Call cancel to release resources
 // associated with the context as soon as the operation running in the context complete.
-func (c Command) WithTimeout(d stdtime.Duration) (*Command, context.CancelFunc) {
+func (c Base) WithTimeout(d stdtime.Duration) (*Base, context.CancelFunc) {
 	ctx, cancel := context.WithTimeout(c.context, d)
 	c.context = ctx
 	return &c, cancel
@@ -128,7 +128,7 @@ func (c Command) WithTimeout(d stdtime.Duration) (*Command, context.CancelFunc) 
 
 // Close log and stop handling signals and mark the command context as done. Calling while a command
 // is running will cancel the command.
-func (c *Command) Close() {
+func (c *Base) Close() {
 	if c.stop != nil {
 		c.stop()
 	}
@@ -137,7 +137,7 @@ func (c *Command) Close() {
 }
 
 // WriteReport writes report in yaml format to the command output directory.
-func (c *Command) WriteReport(report any) error {
+func (c *Base) WriteReport(report any) error {
 	data, err := yaml.Marshal(report)
 	if err != nil {
 		return fmt.Errorf("failed to marshal report: %w", err)
