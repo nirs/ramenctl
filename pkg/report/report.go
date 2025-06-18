@@ -37,12 +37,14 @@ type Report struct {
 	Host    Host      `json:"host"`
 	Build   *Build    `json:"build,omitempty"`
 	Created time.Time `json:"created"`
+	Name    string    `json:"name"`
 	Status  Status    `json:"status,omitempty"`
 }
 
 // New create a new generic report. Commands embed the report in the command report.
-func New() *Report {
+func New(commandName string) *Report {
 	r := &Report{
+		Name: commandName,
 		Host: Host{
 			OS:   runtime.GOOS,
 			Arch: runtime.GOARCH,

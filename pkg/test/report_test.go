@@ -51,7 +51,7 @@ func TestReportEmpty(t *testing.T) {
 	r := newReport("test-run", reportConfig)
 
 	// Host and ramenctl info is ready.
-	expectedReport := report.New()
+	expectedReport := report.New("test-run")
 	if !r.Report.Equal(expectedReport) {
 		t.Errorf("expected report %+v, got %+v", expectedReport, r.Report)
 	}
