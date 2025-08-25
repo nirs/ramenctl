@@ -648,6 +648,20 @@ func TestValidateClustersPassed(t *testing.T) {
 					},
 				},
 			},
+			Ramen: report.RamenSummary{
+				Deployment: report.DeploymentSummary{
+					Name:      "ramen-hub-operator",
+					Namespace: testConfig.Namespaces.RamenHubNamespace,
+					Conditions: []report.ValidatedCondition{
+						{
+							Validated: report.Validated{
+								State: report.OK,
+							},
+							Type: "Available",
+						},
+					},
+				},
+			},
 		},
 	}
 	checkClusterStatus(t, validate.report, expected)

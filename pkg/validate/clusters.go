@@ -87,6 +87,10 @@ func (c *Command) validateClustersHub(s *report.ClustersStatusHub) error {
 		return fmt.Errorf("failed to validate DRPolicies: %w", err)
 	}
 
+	if err := c.vlidateClustersHubRamen(&s.Ramen); err != nil {
+		return fmt.Errorf("failed to validate hub ramen: %w", err)
+	}
+
 	return nil
 }
 
@@ -125,6 +129,13 @@ func (c *Command) validateClustersDRPolicies(
 	}
 
 	c.report.Summary.Add(drPoliciesList)
+
+	return nil
+}
+
+func (c *Command) vlidateClustersHubRamen(ramenSummary *report.RamenSummary) error {
+	log := c.Logger()
+	reader := c.outputReader(c.Env().Hub.Name)
 
 	return nil
 }
