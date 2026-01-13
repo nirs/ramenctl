@@ -1,829 +1,1320 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clusters Validation Report - Wireframe</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: #d8d8d8;
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }
-
-        .container {
-            width: 100%;
-            background: white;
-            overflow: hidden;
-        }
-
-        /* Header */
-        .header {
-            background: #4a4a4a;
-            color: white;
-            padding: 24px 32px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 24px;
-        }
-
-        .header-content {
-            flex: 1;
-        }
-
-        .header h1 {
-            font-size: 24px;
-            margin-bottom: 8px;
-        }
-
-        .header-meta {
-            display: flex;
-            gap: 24px;
-            font-size: 14px;
-            opacity: 0.9;
-            flex-wrap: wrap;
-        }
-
-        .status-badge {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 16px;
-            background: rgba(255,255,255,0.2);
-            height: 100%;
-            min-height: 60px;
-        }
-
-        .status-badge.failed {
-            background: #ee0000;
-        }
-
-        .status-badge.passed {
-            background: #10b981;
-        }
-
-        /* Clusters Section - Most Important */
-        .clusters-section {
-            padding: 32px;
-            background: #d8d8d8;
-            border-bottom: 2px solid #e5e7eb;
-        }
-
-        .clusters-section h2 {
-            font-size: 20px;
-            margin-bottom: 24px;
-            color: #1f2937;
-        }
-
-        .clusters-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-            gap: 24px;
-        }
-
-        /* Responsive: switch to 2 columns earlier */
-        @media (max-width: 1600px) {
-            .clusters-grid {
-                grid-template-columns: repeat(2, 1fr);
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Clusters Validation Report - Wireframe</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
             }
-        }
 
-        /* Responsive: stack vertically on smaller screens */
-        @media (max-width: 1100px) {
-            .clusters-grid {
-                grid-template-columns: 1fr;
+            body {
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                    Oxygen, Ubuntu, Cantarell, sans-serif;
+                background: #d8d8d8;
+                margin: 0;
+                padding: 0;
+                color: #333;
             }
-        }
 
-        .cluster-card {
-            background: white;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
+            .container {
+                width: 100%;
+                background: white;
+                overflow: hidden;
+            }
 
-        .cluster-card.hub {
-            border-left: 4px solid #3b82f6;
-        }
+            /* Header */
+            .header {
+                background: #4a4a4a;
+                color: white;
+                padding: 24px 32px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 24px;
+            }
 
-        .cluster-card.dr-cluster {
-            border-left: 4px solid #10b981;
-        }
+            .header-content {
+                flex: 1;
+            }
 
-        .cluster-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid #e5e7eb;
-        }
+            .header h1 {
+                font-size: 24px;
+                margin-bottom: 8px;
+            }
 
-        .cluster-name {
-            font-size: 18px;
-            font-weight: 600;
-            color: #1f2937;
-        }
+            .header-meta {
+                display: flex;
+                gap: 24px;
+                font-size: 14px;
+                opacity: 0.9;
+                flex-wrap: wrap;
+            }
 
-        /* Compact validation items - one line each */
-        .validation-item {
-            display: flex;
-            align-items: center;
-            padding: 8px 12px;
-            margin: 4px 0;
-            border-radius: 4px;
-            background: #f9fafb;
-            font-size: 14px;
-            gap: 12px;
-            min-width: 0;
-        }
+            .status-badge {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 12px 24px;
+                border-radius: 8px;
+                font-weight: 600;
+                font-size: 16px;
+                background: rgba(255, 255, 255, 0.2);
+                height: 100%;
+                min-height: 60px;
+            }
 
-        .validation-item:hover {
-            background: #f3f4f6;
-        }
+            .status-badge.failed {
+                background: #ee0000;
+            }
 
-        .validation-item-label {
-            flex: 0 0 150px;
-            font-weight: 500;
-            color: #4b5563;
-            min-width: 0;
-        }
+            .status-badge.passed {
+                background: #10b981;
+            }
 
-        .validation-item-value {
-            flex: 1;
-            color: #1f2937;
-            min-width: 0;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-        }
+            /* Clusters Section - Most Important */
+            .clusters-section {
+                padding: 32px;
+                background: #d8d8d8;
+                border-bottom: 2px solid #e5e7eb;
+            }
 
-        .validation-item-state {
-            flex: 0 0 40px;
-            text-align: left;
-            min-width: 40px;
-            flex-shrink: 0;
-        }
+            .clusters-section h2 {
+                font-size: 20px;
+                margin-bottom: 24px;
+                color: #1f2937;
+            }
 
-        .state-ok {
-            color: #10b981;
-            font-weight: 600;
-        }
+            .clusters-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+                gap: 24px;
+            }
 
-        .state-problem {
-            color: #ee0000;
-            font-weight: 600;
-        }
+            /* Responsive: switch to 2 columns earlier */
+            @media (max-width: 1600px) {
+                .clusters-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+            }
 
-        /* Nested sections within cluster */
-        .cluster-section {
-            margin-top: 16px;
-        }
+            /* Responsive: stack vertically on smaller screens */
+            @media (max-width: 1100px) {
+                .clusters-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
 
-        .cluster-section-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: #6b7280;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+            .cluster-card {
+                background: white;
+                border: 2px solid #e5e7eb;
+                border-radius: 8px;
+                padding: 20px;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            }
 
-        /* List items for S3 profiles, DR clusters, etc */
-        .list-item {
-            background: #f9fafb;
-            border-left: 3px solid #d1d5db;
-            padding: 12px;
-            margin: 8px 0;
-            border-radius: 4px;
-        }
+            .cluster-card.hub {
+                border-left: 4px solid #3b82f6;
+            }
 
-        .list-item-name {
-            font-weight: 600;
-            color: #1f2937;
-            margin-bottom: 8px;
-        }
+            .cluster-card.dr-cluster {
+                border-left: 4px solid #10b981;
+            }
 
-        /* Details Section */
-        .details-section {
-            padding: 24px 32px;
-            background: #d8d8d8;
-        }
+            .cluster-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 16px;
+                padding-bottom: 12px;
+                border-bottom: 1px solid #e5e7eb;
+            }
 
-        .details-section h3 {
-            font-size: 20px;
-            color: #1f2937;
-            margin-bottom: 24px;
-        }
+            .cluster-name {
+                font-size: 18px;
+                font-weight: 600;
+                color: #1f2937;
+            }
 
-        .details-content {
-            padding: 0;
-        }
+            /* Compact validation items - one line each */
+            .validation-item {
+                display: flex;
+                align-items: center;
+                padding: 8px 12px;
+                margin: 4px 0;
+                border-radius: 4px;
+                background: #f9fafb;
+                font-size: 14px;
+                gap: 12px;
+                min-width: 0;
+            }
 
-        /* Compact field groups - side by side */
-        .field-group {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 16px;
-            margin-bottom: 20px;
-        }
+            .validation-item:hover {
+                background: #f3f4f6;
+            }
 
-        /* Group layout with indented key-value pairs */
-        .group-item {
-            background: white;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #e5e7eb;
-            font-size: 14px;
-        }
+            .validation-item-label {
+                flex: 0 0 150px;
+                font-weight: 500;
+                color: #4b5563;
+                min-width: 0;
+            }
 
-        .group-title {
-            font-weight: 600;
-            color: #374151;
-            margin-bottom: 8px;
-        }
+            .validation-item-value {
+                flex: 1;
+                color: #1f2937;
+                min-width: 0;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+            }
 
-        .group-field {
-            margin-left: 16px;
-            margin-top: 4px;
-            color: #1f2937;
-        }
+            .validation-item-state {
+                flex: 0 0 40px;
+                text-align: left;
+                min-width: 40px;
+                flex-shrink: 0;
+            }
 
-        .group-field-key {
-            color: #6b7280;
-        }
+            .state-ok {
+                color: #10b981;
+                font-weight: 600;
+            }
 
-        .group-field-value {
-            color: #1f2937;
-            font-weight: 500;
-        }
+            .state-problem {
+                color: #ee0000;
+                font-weight: 600;
+            }
 
-        .group-field-value.ok {
-            color: #10b981;
-        }
+            /* Nested sections within cluster */
+            .cluster-section {
+                margin-top: 16px;
+            }
 
-        .group-field-value.error {
-            color: #ef4444;
-        }
+            .cluster-section-title {
+                font-size: 14px;
+                font-weight: 600;
+                color: #6b7280;
+                margin-bottom: 8px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
 
-        .group-field-value.stale {
-            color: #6b7280;
-        }
+            /* List items for S3 profiles, DR clusters, etc */
+            .list-item {
+                background: #f9fafb;
+                border-left: 3px solid #d1d5db;
+                padding: 12px;
+                margin: 8px 0;
+                border-radius: 4px;
+            }
 
-        /* Details layout: boxes on left, steps on right */
-        .details-layout {
-            display: grid;
-            grid-template-columns: 1fr 400px;
-            gap: 24px;
-            align-items: start;
-        }
+            .list-item-name {
+                font-weight: 600;
+                color: #1f2937;
+                margin-bottom: 8px;
+            }
 
-        @media (max-width: 1000px) {
+            /* Details Section */
+            .details-section {
+                padding: 24px 32px;
+                background: #d8d8d8;
+            }
+
+            .details-section h3 {
+                font-size: 20px;
+                color: #1f2937;
+                margin-bottom: 24px;
+            }
+
+            .details-content {
+                padding: 0;
+            }
+
+            /* Compact field groups - side by side */
+            .field-group {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 16px;
+                margin-bottom: 20px;
+            }
+
+            /* Group layout with indented key-value pairs */
+            .group-item {
+                background: white;
+                padding: 12px;
+                border-radius: 8px;
+                border: 1px solid #e5e7eb;
+                font-size: 14px;
+            }
+
+            .group-title {
+                font-weight: 600;
+                color: #374151;
+                margin-bottom: 8px;
+            }
+
+            .group-field {
+                margin-left: 16px;
+                margin-top: 4px;
+                color: #1f2937;
+            }
+
+            .group-field-key {
+                color: #6b7280;
+            }
+
+            .group-field-value {
+                color: #1f2937;
+                font-weight: 500;
+            }
+
+            .group-field-value.ok {
+                color: #10b981;
+            }
+
+            .group-field-value.error {
+                color: #ef4444;
+            }
+
+            .group-field-value.stale {
+                color: #6b7280;
+            }
+
+            /* Details layout: boxes on left, steps on right */
             .details-layout {
-                grid-template-columns: 1fr;
+                display: grid;
+                grid-template-columns: 1fr 400px;
+                gap: 24px;
+                align-items: start;
             }
-        }
 
-        .steps-section {
-            position: sticky;
-            top: 20px;
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            padding: 16px;
-        }
+            @media (max-width: 1000px) {
+                .details-layout {
+                    grid-template-columns: 1fr;
+                }
+            }
 
-        .steps-section h4 {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #374151;
-        }
+            .steps-section {
+                position: sticky;
+                top: 20px;
+                background: white;
+                border: 1px solid #e5e7eb;
+                border-radius: 8px;
+                padding: 16px;
+            }
 
-        .namespace-tag {
-            display: block;
-            padding: 4px 8px;
-            background: #e5e7eb;
-            border-radius: 8px;
-            font-size: 13px;
-            margin: 2px 0;
-        }
+            .steps-section h4 {
+                font-size: 14px;
+                font-weight: 600;
+                margin-bottom: 8px;
+                color: #374151;
+            }
 
-        /* Steps list */
-        .steps-list {
-            list-style: none;
-        }
+            .namespace-tag {
+                display: block;
+                padding: 4px 8px;
+                background: #e5e7eb;
+                border-radius: 8px;
+                font-size: 13px;
+                margin: 2px 0;
+            }
 
-        .step-item {
-            padding: 8px 0 8px 8px;
-            margin: 4px 0;
-            background: white;
-            border-left: 4px solid #d1d5db;
-            border-radius: 8px;
-            font-size: 14px;
-        }
+            /* Steps list */
+            .steps-list {
+                list-style: none;
+            }
 
-        .step-item.passed {
-            border-left-color: #10b981;
-        }
+            .step-item {
+                padding: 8px 0 8px 8px;
+                margin: 4px 0;
+                background: white;
+                border-left: 4px solid #d1d5db;
+                border-radius: 8px;
+                font-size: 14px;
+            }
 
-        .step-item.failed {
-            border-left-color: #ef4444;
-        }
+            .step-item.passed {
+                border-left-color: #10b981;
+            }
 
-        .step-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2px;
-        }
+            .step-item.failed {
+                border-left-color: #ef4444;
+            }
 
-        .step-name {
-            font-size: 14px;
-            font-weight: 400;
-            color: #1f2937;
-        }
+            .step-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 2px;
+            }
 
-        .step-duration {
-            font-size: 12px;
-            color: #6b7280;
-            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <div class="header-content">
-                <h1>Clusters Validation Report</h1>
-                <div class="header-meta">
+            .step-name {
+                font-size: 14px;
+                font-weight: 400;
+                color: #1f2937;
+            }
+
+            .step-duration {
+                font-size: 12px;
+                color: #6b7280;
+                font-family: "Monaco", "Menlo", "Courier New", monospace;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <!-- Header -->
+            <div class="header">
+                <div class="header-content">
+                    <h1>Clusters Validation Report</h1>
+                    <div class="header-meta"></div>
+                </div>
+                <span class="status-badge passed">Status: Passed</span>
+            </div>
+
+            <!-- Clusters Section - Most Important, Side by Side -->
+            <div class="clusters-section">
+                <h2>Cluster Status</h2>
+                <div class="clusters-grid">
+                    <!-- Hub Cluster -->
+                    <div class="cluster-card hub">
+                        <div class="cluster-header">
+                            <div class="cluster-name">Hub</div>
+                        </div>
+
+                        <div class="cluster-section">
+                            <div class="cluster-section-title">
+                                Ramen Deployment
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-item-label">Name</span>
+                                <span class="validation-item-value"
+                                    >ramen-hub-operator</span
+                                >
+                                <span
+                                    class="validation-item-state state-ok"
+                                    aria-label="ok"
+                                    >✅</span
+                                >
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-item-label"
+                                    >Namespace</span
+                                >
+                                <span class="validation-item-value"
+                                    >ramen-system</span
+                                >
+                                <span
+                                    class="validation-item-state state-ok"
+                                    aria-label="ok"
+                                    >✅</span
+                                >
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-item-label"
+                                    >Replicas</span
+                                >
+                                <span class="validation-item-value">1</span>
+                                <span
+                                    class="validation-item-state state-ok"
+                                    aria-label="ok"
+                                    >✅</span
+                                >
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-item-label"
+                                    >Deleted</span
+                                >
+                                <span class="validation-item-value">—</span>
+                                <span
+                                    class="validation-item-state state-ok"
+                                    aria-label="ok"
+                                    >✅</span
+                                >
+                            </div>
+
+                            <div
+                                class="cluster-section-title"
+                                style="margin-top: 16px"
+                            >
+                                Deployment Conditions
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-item-label"
+                                    >Available</span
+                                >
+                                <span class="validation-item-value">—</span>
+                                <span
+                                    class="validation-item-state state-ok"
+                                    aria-label="ok"
+                                    >✅</span
+                                >
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-item-label"
+                                    >Progressing</span
+                                >
+                                <span class="validation-item-value">—</span>
+                                <span
+                                    class="validation-item-state state-ok"
+                                    aria-label="ok"
+                                    >✅</span
+                                >
+                            </div>
+
+                            <div
+                                class="cluster-section-title"
+                                style="margin-top: 16px"
+                            >
+                                Ramen ConfigMap
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-item-label">Name</span>
+                                <span class="validation-item-value"
+                                    >ramen-hub-operator-config</span
+                                >
+                                <span
+                                    class="validation-item-state state-ok"
+                                    aria-label="ok"
+                                    >✅</span
+                                >
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-item-label"
+                                    >Namespace</span
+                                >
+                                <span class="validation-item-value"
+                                    >ramen-system</span
+                                >
+                                <span
+                                    class="validation-item-state state-ok"
+                                    aria-label="ok"
+                                    >✅</span
+                                >
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-item-label"
+                                    >Controller Type</span
+                                >
+                                <span class="validation-item-value"
+                                    >dr-hub</span
+                                >
+                                <span
+                                    class="validation-item-state state-ok"
+                                    aria-label="ok"
+                                    >✅</span
+                                >
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-item-label"
+                                    >Deleted</span
+                                >
+                                <span class="validation-item-value">—</span>
+                                <span
+                                    class="validation-item-state state-ok"
+                                    aria-label="ok"
+                                    >✅</span
+                                >
+                            </div>
+
+                            <div
+                                class="cluster-section-title"
+                                style="margin-top: 16px"
+                            >
+                                S3 Store Profiles
+                            </div>
+                            <div class="list-item">
+                                <div class="list-item-name">minio-on-dr1</div>
+                                <div class="validation-item">
+                                    <span class="validation-item-label"
+                                        >Secret</span
+                                    >
+                                    <span class="validation-item-value"
+                                        >ramen-s3-secret-dr1
+                                        (ramen-system)</span
+                                    >
+                                    <span
+                                        class="validation-item-state state-ok"
+                                        aria-label="ok"
+                                        >✅</span
+                                    >
+                                </div>
+                            </div>
+                            <div class="list-item">
+                                <div class="list-item-name">minio-on-dr2</div>
+                                <div class="validation-item">
+                                    <span class="validation-item-label"
+                                        >Secret</span
+                                    >
+                                    <span class="validation-item-value"
+                                        >ramen-s3-secret-dr2
+                                        (ramen-system)</span
+                                    >
+                                    <span
+                                        class="validation-item-state state-ok"
+                                        aria-label="ok"
+                                        >✅</span
+                                    >
+                                </div>
+                            </div>
+
+                            <div
+                                class="cluster-section-title"
+                                style="margin-top: 16px"
+                            >
+                                DR Clusters
+                            </div>
+                            <div class="list-item">
+                                <div class="list-item-name">dr1</div>
+                                <div class="validation-item">
+                                    <span class="validation-item-label"
+                                        >Phase</span
+                                    >
+                                    <span class="validation-item-value"
+                                        >Available</span
+                                    >
+                                    <span
+                                        class="validation-item-state state-ok"
+                                        aria-label="ok"
+                                        >✅</span
+                                    >
+                                </div>
+                                <div class="validation-item">
+                                    <span class="validation-item-label"
+                                        >Fenced</span
+                                    >
+                                    <span class="validation-item-value">—</span>
+                                    <span
+                                        class="validation-item-state state-ok"
+                                        aria-label="ok"
+                                        >✅</span
+                                    >
+                                </div>
+                                <div class="validation-item">
+                                    <span class="validation-item-label"
+                                        >Clean</span
+                                    >
+                                    <span class="validation-item-value">—</span>
+                                    <span
+                                        class="validation-item-state state-ok"
+                                        aria-label="ok"
+                                        >✅</span
+                                    >
+                                </div>
+                                <div class="validation-item">
+                                    <span class="validation-item-label"
+                                        >Validated</span
+                                    >
+                                    <span class="validation-item-value">—</span>
+                                    <span
+                                        class="validation-item-state state-ok"
+                                        aria-label="ok"
+                                        >✅</span
+                                    >
+                                </div>
+                            </div>
+                            <div class="list-item">
+                                <div class="list-item-name">dr2</div>
+                                <div class="validation-item">
+                                    <span class="validation-item-label"
+                                        >Phase</span
+                                    >
+                                    <span class="validation-item-value"
+                                        >Available</span
+                                    >
+                                    <span
+                                        class="validation-item-state state-ok"
+                                        aria-label="ok"
+                                        >✅</span
+                                    >
+                                </div>
+                                <div class="validation-item">
+                                    <span class="validation-item-label"
+                                        >Fenced</span
+                                    >
+                                    <span class="validation-item-value">—</span>
+                                    <span
+                                        class="validation-item-state state-ok"
+                                        aria-label="ok"
+                                        >✅</span
+                                    >
+                                </div>
+                                <div class="validation-item">
+                                    <span class="validation-item-label"
+                                        >Clean</span
+                                    >
+                                    <span class="validation-item-value">—</span>
+                                    <span
+                                        class="validation-item-state state-ok"
+                                        aria-label="ok"
+                                        >✅</span
+                                    >
+                                </div>
+                                <div class="validation-item">
+                                    <span class="validation-item-label"
+                                        >Validated</span
+                                    >
+                                    <span class="validation-item-value">—</span>
+                                    <span
+                                        class="validation-item-state state-ok"
+                                        aria-label="ok"
+                                        >✅</span
+                                    >
+                                </div>
+                            </div>
+
+                            <div
+                                class="cluster-section-title"
+                                style="margin-top: 16px"
+                            >
+                                DR Policies
+                            </div>
+                            <div class="list-item">
+                                <div class="list-item-name">dr-policy</div>
+                                <div class="validation-item">
+                                    <span class="validation-item-label"
+                                        >Scheduling Interval</span
+                                    >
+                                    <span class="validation-item-value"
+                                        >1m</span
+                                    >
+                                    <span
+                                        class="validation-item-state state-ok"
+                                        aria-label="ok"
+                                        >✅</span
+                                    >
+                                </div>
+                                <div class="validation-item">
+                                    <span class="validation-item-label"
+                                        >DR Clusters</span
+                                    >
+                                    <span class="validation-item-value"
+                                        >dr1, dr2</span
+                                    >
+                                    <span
+                                        class="validation-item-state state-ok"
+                                        aria-label="ok"
+                                        >✅</span
+                                    >
+                                </div>
+                                <div class="validation-item">
+                                    <span class="validation-item-label"
+                                        >Validated</span
+                                    >
+                                    <span class="validation-item-value">—</span>
+                                    <span
+                                        class="validation-item-state state-ok"
+                                        aria-label="ok"
+                                        >✅</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DR Cluster 1 -->
+                    <div class="cluster-card dr-cluster">
+                        <div class="cluster-header">
+                            <div class="cluster-name">dr1</div>
+                        </div>
+
+                        <div class="cluster-section">
+                            <div class="cluster-section-title">
+                                Ramen Deployment
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-item-label">Name</span>
+                                <span class="validation-item-value"
+                                    >ramen-dr-cluster-operator</span
+                                >
+                                <span
+                                    class="validation-item-state state-ok"
+                                    aria-label="ok"
+                                    >✅</span
+                                >
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-item-label"
+                                    >Namespace</span
+                                >
+                                <span class="validation-item-value"
+                                    >ramen-system</span
+                                >
+                                <span
+                                    class="validation-item-state state-ok"
+                                    aria-label="ok"
+                                    >✅</span
+                                >
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-item-label"
+                                    >Replicas</span
+                                >
+                                <span class="validation-item-value">1</span>
+                                <span
+                                    class="validation-item-state state-ok"
+                                    aria-label="ok"
+                                    >✅</span
+                                >
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-item-label"
+                                    >Deleted</span
+                                >
+                                <span class="validation-item-value">—</span>
+                                <span
+                                    class="validation-item-state state-ok"
+                                    aria-label="ok"
+                                    >✅</span
+                                >
+                            </div>
+
+                            <div
+                                class="cluster-section-title"
+                                style="margin-top: 16px"
+                            >
+                                Deployment Conditions
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-item-label"
+                                    >Available</span
+                                >
+                                <span class="validation-item-value">—</span>
+                                <span
+                                    class="validation-item-state state-ok"
+                                    aria-label="ok"
+                                    >✅</span
+                                >
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-item-label"
+                                    >Progressing</span
+                                >
+                                <span class="validation-item-value">—</span>
+                                <span
+                                    class="validation-item-state state-ok"
+                                    aria-label="ok"
+                                    >✅</span
+                                >
+                            </div>
+
+                            <div
+                                class="cluster-section-title"
+                                style="margin-top: 16px"
+                            >
+                                Ramen ConfigMap
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-item-label">Name</span>
+                                <span class="validation-item-value"
+                                    >ramen-dr-cluster-operator-config</span
+                                >
+                                <span
+                                    class="validation-item-state state-ok"
+                                    aria-label="ok"
+                                    >✅</span
+                                >
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-item-label"
+                                    >Namespace</span
+                                >
+                                <span class="validation-item-value"
+                                    >ramen-system</span
+                                >
+                                <span
+                                    class="validation-item-state state-ok"
+                                    aria-label="ok"
+                                    >✅</span
+                                >
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-item-label"
+                                    >Controller Type</span
+                                >
+                                <span class="validation-item-value"
+                                    >dr-cluster</span
+                                >
+                                <span
+                                    class="validation-item-state state-ok"
+                                    aria-label="ok"
+                                    >✅</span
+                                >
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-item-label"
+                                    >Deleted</span
+                                >
+                                <span class="validation-item-value">—</span>
+                                <span
+                                    class="validation-item-state state-ok"
+                                    aria-label="ok"
+                                    >✅</span
+                                >
+                            </div>
+
+                            <div
+                                class="cluster-section-title"
+                                style="margin-top: 16px"
+                            >
+                                S3 Store Profiles
+                            </div>
+                            <div class="list-item">
+                                <div class="list-item-name">minio-on-dr1</div>
+                                <div class="validation-item">
+                                    <span class="validation-item-label"
+                                        >Secret</span
+                                    >
+                                    <span class="validation-item-value"
+                                        >ramen-s3-secret-dr1
+                                        (ramen-system)</span
+                                    >
+                                    <span
+                                        class="validation-item-state state-ok"
+                                        aria-label="ok"
+                                        >✅</span
+                                    >
+                                </div>
+                            </div>
+                            <div class="list-item">
+                                <div class="list-item-name">minio-on-dr2</div>
+                                <div class="validation-item">
+                                    <span class="validation-item-label"
+                                        >Secret</span
+                                    >
+                                    <span class="validation-item-value"
+                                        >ramen-s3-secret-dr2
+                                        (ramen-system)</span
+                                    >
+                                    <span
+                                        class="validation-item-state state-ok"
+                                        aria-label="ok"
+                                        >✅</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DR Cluster 2 -->
+                    <div class="cluster-card dr-cluster">
+                        <div class="cluster-header">
+                            <div class="cluster-name">dr2</div>
+                        </div>
+
+                        <div class="cluster-section">
+                            <div class="cluster-section-title">
+                                Ramen Deployment
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-item-label">Name</span>
+                                <span class="validation-item-value"
+                                    >ramen-dr-cluster-operator</span
+                                >
+                                <span
+                                    class="validation-item-state state-ok"
+                                    aria-label="ok"
+                                    >✅</span
+                                >
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-item-label"
+                                    >Namespace</span
+                                >
+                                <span class="validation-item-value"
+                                    >ramen-system</span
+                                >
+                                <span
+                                    class="validation-item-state state-ok"
+                                    aria-label="ok"
+                                    >✅</span
+                                >
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-item-label"
+                                    >Replicas</span
+                                >
+                                <span class="validation-item-value">1</span>
+                                <span
+                                    class="validation-item-state state-ok"
+                                    aria-label="ok"
+                                    >✅</span
+                                >
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-item-label"
+                                    >Deleted</span
+                                >
+                                <span class="validation-item-value">—</span>
+                                <span
+                                    class="validation-item-state state-ok"
+                                    aria-label="ok"
+                                    >✅</span
+                                >
+                            </div>
+
+                            <div
+                                class="cluster-section-title"
+                                style="margin-top: 16px"
+                            >
+                                Deployment Conditions
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-item-label"
+                                    >Available</span
+                                >
+                                <span class="validation-item-value">—</span>
+                                <span
+                                    class="validation-item-state state-ok"
+                                    aria-label="ok"
+                                    >✅</span
+                                >
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-item-label"
+                                    >Progressing</span
+                                >
+                                <span class="validation-item-value">—</span>
+                                <span
+                                    class="validation-item-state state-ok"
+                                    aria-label="ok"
+                                    >✅</span
+                                >
+                            </div>
+
+                            <div
+                                class="cluster-section-title"
+                                style="margin-top: 16px"
+                            >
+                                Ramen ConfigMap
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-item-label">Name</span>
+                                <span class="validation-item-value"
+                                    >ramen-dr-cluster-operator-config</span
+                                >
+                                <span
+                                    class="validation-item-state state-ok"
+                                    aria-label="ok"
+                                    >✅</span
+                                >
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-item-label"
+                                    >Namespace</span
+                                >
+                                <span class="validation-item-value"
+                                    >ramen-system</span
+                                >
+                                <span
+                                    class="validation-item-state state-ok"
+                                    aria-label="ok"
+                                    >✅</span
+                                >
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-item-label"
+                                    >Controller Type</span
+                                >
+                                <span class="validation-item-value"
+                                    >dr-cluster</span
+                                >
+                                <span
+                                    class="validation-item-state state-ok"
+                                    aria-label="ok"
+                                    >✅</span
+                                >
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-item-label"
+                                    >Deleted</span
+                                >
+                                <span class="validation-item-value">—</span>
+                                <span
+                                    class="validation-item-state state-ok"
+                                    aria-label="ok"
+                                    >✅</span
+                                >
+                            </div>
+
+                            <div
+                                class="cluster-section-title"
+                                style="margin-top: 16px"
+                            >
+                                S3 Store Profiles
+                            </div>
+                            <div class="list-item">
+                                <div class="list-item-name">minio-on-dr1</div>
+                                <div class="validation-item">
+                                    <span class="validation-item-label"
+                                        >Secret</span
+                                    >
+                                    <span class="validation-item-value"
+                                        >ramen-s3-secret-dr1
+                                        (ramen-system)</span
+                                    >
+                                    <span
+                                        class="validation-item-state state-ok"
+                                        aria-label="ok"
+                                        >✅</span
+                                    >
+                                </div>
+                            </div>
+                            <div class="list-item">
+                                <div class="list-item-name">minio-on-dr2</div>
+                                <div class="validation-item">
+                                    <span class="validation-item-label"
+                                        >Secret</span
+                                    >
+                                    <span class="validation-item-value"
+                                        >ramen-s3-secret-dr2
+                                        (ramen-system)</span
+                                    >
+                                    <span
+                                        class="validation-item-state state-ok"
+                                        aria-label="ok"
+                                        >✅</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <span class="status-badge passed">Status: Passed</span>
-        </div>
 
-        <!-- Clusters Section - Most Important, Side by Side -->
-        <div class="clusters-section">
-            <h2>Cluster Status</h2>
-            <div class="clusters-grid">
-                <!-- Hub Cluster -->
-                <div class="cluster-card hub">
-                    <div class="cluster-header">
-                        <div class="cluster-name">Hub</div>
-                    </div>
-                    
-                    <div class="cluster-section">
-                        <div class="cluster-section-title">Ramen Deployment</div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Name</span>
-                            <span class="validation-item-value">ramen-hub-operator</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Namespace</span>
-                            <span class="validation-item-value">ramen-system</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Replicas</span>
-                            <span class="validation-item-value">1</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Deleted</span>
-                            <span class="validation-item-value">—</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        
-                        <div class="cluster-section-title" style="margin-top: 16px;">Deployment Conditions</div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Available</span>
-                            <span class="validation-item-value">—</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Progressing</span>
-                            <span class="validation-item-value">—</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        
-                        <div class="cluster-section-title" style="margin-top: 16px;">Ramen ConfigMap</div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Name</span>
-                            <span class="validation-item-value">ramen-hub-operator-config</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Namespace</span>
-                            <span class="validation-item-value">ramen-system</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Controller Type</span>
-                            <span class="validation-item-value">dr-hub</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Deleted</span>
-                            <span class="validation-item-value">—</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        
-                        <div class="cluster-section-title" style="margin-top: 16px;">S3 Store Profiles</div>
-                        <div class="list-item">
-                            <div class="list-item-name">minio-on-dr1</div>
-                            <div class="validation-item">
-                                <span class="validation-item-label">Secret</span>
-                                <span class="validation-item-value">ramen-s3-secret-dr1 (ramen-system)</span>
-                                <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                            </div>
-                        </div>
-                        <div class="list-item">
-                            <div class="list-item-name">minio-on-dr2</div>
-                            <div class="validation-item">
-                                <span class="validation-item-label">Secret</span>
-                                <span class="validation-item-value">ramen-s3-secret-dr2 (ramen-system)</span>
-                                <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                            </div>
-                        </div>
-                        
-                        <div class="cluster-section-title" style="margin-top: 16px;">DR Clusters</div>
-                        <div class="list-item">
-                            <div class="list-item-name">dr1</div>
-                            <div class="validation-item">
-                                <span class="validation-item-label">Phase</span>
-                                <span class="validation-item-value">Available</span>
-                                <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                            </div>
-                            <div class="validation-item">
-                                <span class="validation-item-label">Fenced</span>
-                                <span class="validation-item-value">—</span>
-                                <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                            </div>
-                            <div class="validation-item">
-                                <span class="validation-item-label">Clean</span>
-                                <span class="validation-item-value">—</span>
-                                <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                            </div>
-                            <div class="validation-item">
-                                <span class="validation-item-label">Validated</span>
-                                <span class="validation-item-value">—</span>
-                                <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                            </div>
-                        </div>
-                        <div class="list-item">
-                            <div class="list-item-name">dr2</div>
-                            <div class="validation-item">
-                                <span class="validation-item-label">Phase</span>
-                                <span class="validation-item-value">Available</span>
-                                <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                            </div>
-                            <div class="validation-item">
-                                <span class="validation-item-label">Fenced</span>
-                                <span class="validation-item-value">—</span>
-                                <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                            </div>
-                            <div class="validation-item">
-                                <span class="validation-item-label">Clean</span>
-                                <span class="validation-item-value">—</span>
-                                <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                            </div>
-                            <div class="validation-item">
-                                <span class="validation-item-label">Validated</span>
-                                <span class="validation-item-value">—</span>
-                                <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                            </div>
-                        </div>
-                        
-                        <div class="cluster-section-title" style="margin-top: 16px;">DR Policies</div>
-                        <div class="list-item">
-                            <div class="list-item-name">dr-policy</div>
-                            <div class="validation-item">
-                                <span class="validation-item-label">Scheduling Interval</span>
-                                <span class="validation-item-value">1m</span>
-                                <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                            </div>
-                            <div class="validation-item">
-                                <span class="validation-item-label">DR Clusters</span>
-                                <span class="validation-item-value">dr1, dr2</span>
-                                <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                            </div>
-                            <div class="validation-item">
-                                <span class="validation-item-label">Validated</span>
-                                <span class="validation-item-value">—</span>
-                                <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                            </div>
-                        </div>
-                        </div>
-                        </div>
-                        
-                <!-- DR Cluster 1 -->
-                <div class="cluster-card dr-cluster">
-                    <div class="cluster-header">
-                        <div class="cluster-name">dr1</div>
-                        </div>
-                        
-                    <div class="cluster-section">
-                        <div class="cluster-section-title">Ramen Deployment</div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Name</span>
-                            <span class="validation-item-value">ramen-dr-cluster-operator</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Namespace</span>
-                            <span class="validation-item-value">ramen-system</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Replicas</span>
-                            <span class="validation-item-value">1</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Deleted</span>
-                            <span class="validation-item-value">—</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        
-                        <div class="cluster-section-title" style="margin-top: 16px;">Deployment Conditions</div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Available</span>
-                            <span class="validation-item-value">—</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Progressing</span>
-                            <span class="validation-item-value">—</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                </div>
+            <!-- Details Section -->
+            <div class="details-section">
+                <h3>Report Details</h3>
+                <div class="details-content">
+                    <div class="details-layout">
+                        <!-- Left side: Boxes -->
+                        <div>
+                            <div class="field-group">
+                                <!-- Summary -->
+                                <div class="group-item">
+                                    <div class="group-title">summary</div>
+                                    <div class="group-field">
+                                        <span class="group-field-key">ok:</span>
+                                        <span class="group-field-value ok"
+                                            >36</span
+                                        >
+                                    </div>
+                                    <div class="group-field">
+                                        <span class="group-field-key"
+                                            >error:</span
+                                        >
+                                        <span class="group-field-value error"
+                                            >0</span
+                                        >
+                                    </div>
+                                    <div class="group-field">
+                                        <span class="group-field-key"
+                                            >stale:</span
+                                        >
+                                        <span class="group-field-value stale"
+                                            >0</span
+                                        >
+                                    </div>
+                                </div>
 
-                        <div class="cluster-section-title" style="margin-top: 16px;">Ramen ConfigMap</div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Name</span>
-                            <span class="validation-item-value">ramen-dr-cluster-operator-config</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Namespace</span>
-                            <span class="validation-item-value">ramen-system</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Controller Type</span>
-                            <span class="validation-item-value">dr-cluster</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Deleted</span>
-                            <span class="validation-item-value">—</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        
-                        <div class="cluster-section-title" style="margin-top: 16px;">S3 Store Profiles</div>
-                        <div class="list-item">
-                            <div class="list-item-name">minio-on-dr1</div>
-                            <div class="validation-item">
-                                <span class="validation-item-label">Secret</span>
-                                <span class="validation-item-value">ramen-s3-secret-dr1 (ramen-system)</span>
-                                <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                            </div>
-                        </div>
-                        <div class="list-item">
-                            <div class="list-item-name">minio-on-dr2</div>
-                            <div class="validation-item">
-                                <span class="validation-item-label">Secret</span>
-                                <span class="validation-item-value">ramen-s3-secret-dr2 (ramen-system)</span>
-                                <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                                <!-- Cluster -->
+                                <div class="group-item">
+                                    <div class="group-title">cluster</div>
+                                    <div class="group-field">
+                                        <span class="group-field-key"
+                                            >distro:</span
+                                        >
+                                        <span class="group-field-value"
+                                            >k8s</span
+                                        >
+                                    </div>
+                                    <div class="group-field">
+                                        <span class="group-field-key"
+                                            >clusterset:</span
+                                        >
+                                        <span class="group-field-value"
+                                            >default</span
+                                        >
+                                    </div>
+                                </div>
 
-                <!-- DR Cluster 2 -->
-                <div class="cluster-card dr-cluster">
-                    <div class="cluster-header">
-                        <div class="cluster-name">dr2</div>
-                        </div>
-                        
-                    <div class="cluster-section">
-                        <div class="cluster-section-title">Ramen Deployment</div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Name</span>
-                            <span class="validation-item-value">ramen-dr-cluster-operator</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Namespace</span>
-                            <span class="validation-item-value">ramen-system</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Replicas</span>
-                            <span class="validation-item-value">1</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Deleted</span>
-                            <span class="validation-item-value">—</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        
-                        <div class="cluster-section-title" style="margin-top: 16px;">Deployment Conditions</div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Available</span>
-                            <span class="validation-item-value">—</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Progressing</span>
-                            <span class="validation-item-value">—</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                </div>
+                                <!-- Namespaces -->
+                                <div class="group-item">
+                                    <div class="group-title">namespaces</div>
+                                    <div class="group-field">
+                                        <span class="namespace-tag"
+                                            >ramen-system</span
+                                        >
+                                    </div>
+                                </div>
 
-                        <div class="cluster-section-title" style="margin-top: 16px;">Ramen ConfigMap</div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Name</span>
-                            <span class="validation-item-value">ramen-dr-cluster-operator-config</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Namespace</span>
-                            <span class="validation-item-value">ramen-system</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Controller Type</span>
-                            <span class="validation-item-value">dr-cluster</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Deleted</span>
-                            <span class="validation-item-value">—</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        
-                        <div class="cluster-section-title" style="margin-top: 16px;">S3 Store Profiles</div>
-                        <div class="list-item">
-                            <div class="list-item-name">minio-on-dr1</div>
-                            <div class="validation-item">
-                                <span class="validation-item-label">Secret</span>
-                                <span class="validation-item-value">ramen-s3-secret-dr1 (ramen-system)</span>
-                                <span class="validation-item-state state-ok" aria-label="ok">✅</span>
+                                <!-- Host -->
+                                <div class="group-item">
+                                    <div class="group-title">host</div>
+                                    <div class="group-field">
+                                        <span class="group-field-key">os:</span>
+                                        <span class="group-field-value"
+                                            >darwin</span
+                                        >
+                                    </div>
+                                    <div class="group-field">
+                                        <span class="group-field-key"
+                                            >arch:</span
+                                        >
+                                        <span class="group-field-value"
+                                            >arm64</span
+                                        >
+                                    </div>
+                                    <div class="group-field">
+                                        <span class="group-field-key"
+                                            >cpus:</span
+                                        >
+                                        <span class="group-field-value"
+                                            >12</span
+                                        >
+                                    </div>
+                                </div>
+
+                                <!-- Build -->
+                                <div class="group-item">
+                                    <div class="group-title">build</div>
+                                    <div class="group-field">
+                                        <span class="group-field-key"
+                                            >version:</span
+                                        >
+                                        <span class="group-field-value"
+                                            >v0.11.1</span
+                                        >
+                                    </div>
+                                    <div class="group-field">
+                                        <span class="group-field-key"
+                                            >commit:</span
+                                        >
+                                        <span
+                                            class="group-field-value"
+                                            title="6f4877ad40d5de77a365277348e61cd95aadfff4"
+                                            >6f4877a</span
+                                        >
+                                    </div>
+                                </div>
+
+                                <!-- Timing -->
+                                <div class="group-item">
+                                    <div class="group-title">timing</div>
+                                    <div class="group-field">
+                                        <span class="group-field-key"
+                                            >created:</span
+                                        >
+                                        <span class="group-field-value"
+                                            >2025-09-09 15:07:19</span
+                                        >
+                                    </div>
+                                    <div class="group-field">
+                                        <span class="group-field-key"
+                                            >duration:</span
+                                        >
+                                        <span class="group-field-value"
+                                            >0.952s</span
+                                        >
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="list-item">
-                            <div class="list-item-name">minio-on-dr2</div>
-                            <div class="validation-item">
-                                <span class="validation-item-label">Secret</span>
-                                <span class="validation-item-value">ramen-s3-secret-dr2 (ramen-system)</span>
-                                <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                            </div>
+
+                        <!-- Right side: Steps -->
+                        <div class="steps-section">
+                            <h4>Steps</h4>
+                            <ul class="steps-list">
+                                <li class="step-item passed">
+                                    <div class="step-header">
+                                        <span class="step-name"
+                                            >validate config</span
+                                        >
+                                        <span class="step-duration"
+                                            >0.014s</span
+                                        >
+                                    </div>
+                                </li>
+                                <li class="step-item passed">
+                                    <div class="step-header">
+                                        <span class="step-name"
+                                            >validate clusters</span
+                                        >
+                                        <span class="step-duration"
+                                            >0.938s</span
+                                        >
+                                    </div>
+                                    <ul
+                                        style="
+                                            margin-top: 8px;
+                                            margin-left: 20px;
+                                            list-style: none;
+                                        "
+                                    >
+                                        <li
+                                            class="step-item passed"
+                                            style="margin: 4px 0"
+                                        >
+                                            <div class="step-header">
+                                                <span class="step-name"
+                                                    >gather "hub"</span
+                                                >
+                                                <span class="step-duration"
+                                                    >0.509s</span
+                                                >
+                                            </div>
+                                        </li>
+                                        <li
+                                            class="step-item passed"
+                                            style="margin: 4px 0"
+                                        >
+                                            <div class="step-header">
+                                                <span class="step-name"
+                                                    >gather "dr2"</span
+                                                >
+                                                <span class="step-duration"
+                                                    >0.932s</span
+                                                >
+                                            </div>
+                                        </li>
+                                        <li
+                                            class="step-item passed"
+                                            style="margin: 4px 0"
+                                        >
+                                            <div class="step-header">
+                                                <span class="step-name"
+                                                    >gather "dr1"</span
+                                                >
+                                                <span class="step-duration"
+                                                    >0.932s</span
+                                                >
+                                            </div>
+                                        </li>
+                                        <li
+                                            class="step-item passed"
+                                            style="margin: 4px 0"
+                                        >
+                                            <div class="step-header">
+                                                <span class="step-name"
+                                                    >validate clusters
+                                                    data</span
+                                                >
+                                                <span class="step-duration"
+                                                    >0.005s</span
+                                                >
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Details Section -->
-        <div class="details-section">
-            <h3>Report Details</h3>
-            <div class="details-content">
-                <div class="details-layout">
-                    <!-- Left side: Boxes -->
-                    <div>
-                        <div class="field-group">
-                            <!-- Summary -->
-                            <div class="group-item">
-                                <div class="group-title">summary</div>
-                                <div class="group-field">
-                                    <span class="group-field-key">ok:</span> <span class="group-field-value ok">36</span>
-                                </div>
-                                <div class="group-field">
-                                    <span class="group-field-key">error:</span> <span class="group-field-value error">0</span>
-                                </div>
-                                <div class="group-field">
-                                    <span class="group-field-key">stale:</span> <span class="group-field-value stale">0</span>
-                                </div>
-                            </div>
-                            
-                            <!-- Cluster -->
-                            <div class="group-item">
-                                <div class="group-title">cluster</div>
-                                <div class="group-field">
-                                    <span class="group-field-key">distro:</span> <span class="group-field-value">k8s</span>
-                                </div>
-                                <div class="group-field">
-                                    <span class="group-field-key">clusterset:</span> <span class="group-field-value">default</span>
-                                </div>
-                            </div>
-                            
-                            <!-- Namespaces -->
-                            <div class="group-item">
-                                <div class="group-title">namespaces</div>
-                                <div class="group-field">
-                                    <span class="namespace-tag">ramen-system</span>
-                                </div>
-                            </div>
-                            
-                            <!-- Host -->
-                            <div class="group-item">
-                                <div class="group-title">host</div>
-                                <div class="group-field">
-                                    <span class="group-field-key">os:</span> <span class="group-field-value">darwin</span>
-                                </div>
-                                <div class="group-field">
-                                    <span class="group-field-key">arch:</span> <span class="group-field-value">arm64</span>
-                                </div>
-                                <div class="group-field">
-                                    <span class="group-field-key">cpus:</span> <span class="group-field-value">12</span>
-                                </div>
-                            </div>
-                            
-                            <!-- Build -->
-                            <div class="group-item">
-                                <div class="group-title">build</div>
-                                <div class="group-field">
-                                    <span class="group-field-key">version:</span> <span class="group-field-value">v0.11.1</span>
-                                </div>
-                                <div class="group-field">
-                                    <span class="group-field-key">commit:</span> <span class="group-field-value" title="6f4877ad40d5de77a365277348e61cd95aadfff4">6f4877a</span>
-                                </div>
-                            </div>
-                            
-                            <!-- Timing -->
-                            <div class="group-item">
-                                <div class="group-title">timing</div>
-                                <div class="group-field">
-                                    <span class="group-field-key">created:</span> <span class="group-field-value">2025-09-09 15:07:19</span>
-                                </div>
-                                <div class="group-field">
-                                    <span class="group-field-key">duration:</span> <span class="group-field-value">0.952s</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Right side: Steps -->
-                    <div class="steps-section">
-                        <h4>Steps</h4>
-                        <ul class="steps-list">
-                            <li class="step-item passed">
-                                <div class="step-header">
-                                    <span class="step-name">validate config</span>
-                                    <span class="step-duration">0.014s</span>
-                                </div>
-                            </li>
-                            <li class="step-item passed">
-                                <div class="step-header">
-                                    <span class="step-name">validate clusters</span>
-                                    <span class="step-duration">0.938s</span>
-                                </div>
-                                <ul style="margin-top: 8px; margin-left: 20px; list-style: none;">
-                                    <li class="step-item passed" style="margin: 4px 0;">
-                                        <div class="step-header">
-                                            <span class="step-name">gather "hub"</span>
-                                            <span class="step-duration">0.509s</span>
-                                        </div>
-                                    </li>
-                                    <li class="step-item passed" style="margin: 4px 0;">
-                                        <div class="step-header">
-                                            <span class="step-name">gather "dr2"</span>
-                                            <span class="step-duration">0.932s</span>
-                                        </div>
-                                    </li>
-                                    <li class="step-item passed" style="margin: 4px 0;">
-                                        <div class="step-header">
-                                            <span class="step-name">gather "dr1"</span>
-                                            <span class="step-duration">0.932s</span>
-                                        </div>
-                                    </li>
-                                    <li class="step-item passed" style="margin: 4px 0;">
-                                        <div class="step-header">
-                                            <span class="step-name">validate clusters data</span>
-                                            <span class="step-duration">0.005s</span>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</body>
+    </body>
 </html>
