@@ -1,0 +1,202 @@
+build:
+  commit: 6f4877ad40d5de77a365277348e61cd95aadfff4
+  version: v0.11.1
+clustersStatus:
+  clusters:
+  - name: dr1
+    ramen:
+      configmap:
+        deleted:
+          state: ok ✅
+        name: ramen-dr-cluster-operator-config
+        namespace: ramen-system
+        ramenControllerType:
+          state: ok ✅
+          value: dr-cluster
+        s3StoreProfiles:
+          state: ok ✅
+          value:
+          - s3ProfileName: minio-on-dr1
+            s3SecretRef:
+              state: ok ✅
+              value:
+                name: ramen-s3-secret-dr1
+                namespace: ramen-system
+          - s3ProfileName: minio-on-dr2
+            s3SecretRef:
+              state: ok ✅
+              value:
+                name: ramen-s3-secret-dr2
+                namespace: ramen-system
+      deployment:
+        conditions:
+        - state: ok ✅
+          type: Available
+        - state: ok ✅
+          type: Progressing
+        deleted:
+          state: ok ✅
+        name: ramen-dr-cluster-operator
+        namespace: ramen-system
+        replicas:
+          state: ok ✅
+          value: 1
+  - name: dr2
+    ramen:
+      configmap:
+        deleted:
+          state: ok ✅
+        name: ramen-dr-cluster-operator-config
+        namespace: ramen-system
+        ramenControllerType:
+          state: ok ✅
+          value: dr-cluster
+        s3StoreProfiles:
+          state: ok ✅
+          value:
+          - s3ProfileName: minio-on-dr1
+            s3SecretRef:
+              state: ok ✅
+              value:
+                name: ramen-s3-secret-dr1
+                namespace: ramen-system
+          - s3ProfileName: minio-on-dr2
+            s3SecretRef:
+              state: ok ✅
+              value:
+                name: ramen-s3-secret-dr2
+                namespace: ramen-system
+      deployment:
+        conditions:
+        - state: ok ✅
+          type: Available
+        - state: ok ✅
+          type: Progressing
+        deleted:
+          state: ok ✅
+        name: ramen-dr-cluster-operator
+        namespace: ramen-system
+        replicas:
+          state: ok ✅
+          value: 1
+  hub:
+    drClusters:
+      state: ok ✅
+      value:
+      - conditions:
+        - state: ok ✅
+          type: Fenced
+        - state: ok ✅
+          type: Clean
+        - state: ok ✅
+          type: Validated
+        name: dr1
+        phase: Available
+      - conditions:
+        - state: ok ✅
+          type: Fenced
+        - state: ok ✅
+          type: Clean
+        - state: ok ✅
+          type: Validated
+        name: dr2
+        phase: Available
+    drPolicies:
+      state: ok ✅
+      value:
+      - conditions:
+        - state: ok ✅
+          type: Validated
+        drClusters:
+        - dr1
+        - dr2
+        name: dr-policy
+        schedulingInterval: 1m
+    ramen:
+      configmap:
+        deleted:
+          state: ok ✅
+        name: ramen-hub-operator-config
+        namespace: ramen-system
+        ramenControllerType:
+          state: ok ✅
+          value: dr-hub
+        s3StoreProfiles:
+          state: ok ✅
+          value:
+          - s3ProfileName: minio-on-dr1
+            s3SecretRef:
+              state: ok ✅
+              value:
+                name: ramen-s3-secret-dr1
+                namespace: ramen-system
+          - s3ProfileName: minio-on-dr2
+            s3SecretRef:
+              state: ok ✅
+              value:
+                name: ramen-s3-secret-dr2
+                namespace: ramen-system
+      deployment:
+        conditions:
+        - state: ok ✅
+          type: Available
+        - state: ok ✅
+          type: Progressing
+        deleted:
+          state: ok ✅
+        name: ramen-hub-operator
+        namespace: ramen-system
+        replicas:
+          state: ok ✅
+          value: 1
+config:
+  clusterSet: default
+  clusters:
+    c1:
+      kubeconfig: /Users/nir/.config/drenv/rdr/kubeconfigs/dr1
+    c2:
+      kubeconfig: /Users/nir/.config/drenv/rdr/kubeconfigs/dr2
+    hub:
+      kubeconfig: /Users/nir/.config/drenv/rdr/kubeconfigs/hub
+    passive-hub:
+      kubeconfig: ""
+  distro: k8s
+  namespaces:
+    argocdNamespace: argocd
+    ramenDRClusterNamespace: ramen-system
+    ramenHubNamespace: ramen-system
+    ramenOpsNamespace: ramen-ops
+created: "2025-09-09T15:07:19.761453+03:00"
+duration: 0.9520550419999999
+host:
+  arch: arm64
+  cpus: 12
+  os: darwin
+name: validate-clusters
+namespaces:
+- ramen-system
+status: passed
+steps:
+- duration: 0.014207542
+  name: validate config
+  status: passed
+- duration: 0.9378475
+  items:
+  - duration: 0.509195458
+    name: gather "hub"
+    status: passed
+  - duration: 0.93233
+    name: gather "dr2"
+    status: passed
+  - duration: 0.932340292
+    name: gather "dr1"
+    status: passed
+  - duration: 0.0053835
+    name: validate clusters data
+    status: passed
+  name: validate clusters
+  status: passed
+summary:
+  error: 0
+  ok: 36
+  stale: 0

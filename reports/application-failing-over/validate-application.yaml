@@ -1,0 +1,158 @@
+application:
+  name: appset-deploy-rbd
+  namespace: argocd
+applicationStatus:
+  hub:
+    drpc:
+      action:
+        state: ok ✅
+        value: Failover
+      conditions:
+      - state: ok ✅
+        type: Available
+      - description: Started failover to cluster "dr2"
+        state: problem ❌
+        type: PeerReady
+      - state: ok ✅
+        type: Protected
+      deleted:
+        state: ok ✅
+      drPolicy: dr-policy
+      name: appset-deploy-rbd
+      namespace: argocd
+      phase:
+        state: ok ✅
+        value: FailedOver
+      progression:
+        description: Waiting for progression "Completed"
+        state: problem ❌
+        value: WaitForReadiness
+  primaryCluster:
+    name: dr2
+    vrg:
+      conditions:
+      - state: ok ✅
+        type: DataReady
+      - state: ok ✅
+        type: ClusterDataReady
+      - state: ok ✅
+        type: ClusterDataProtected
+      - state: ok ✅
+        type: KubeObjectsReady
+      - state: ok ✅
+        type: NoClusterDataConflict
+      deleted:
+        state: ok ✅
+      name: appset-deploy-rbd
+      namespace: e2e-appset-deploy-rbd
+      protectedPVCs:
+      - conditions:
+        - state: ok ✅
+          type: DataReady
+        - state: ok ✅
+          type: ClusterDataProtected
+        deleted:
+          state: ok ✅
+        name: busybox-pvc
+        namespace: e2e-appset-deploy-rbd
+        phase:
+          state: ok ✅
+          value: Bound
+        replication: volrep
+      state:
+        state: ok ✅
+        value: Primary
+  secondaryCluster:
+    name: dr1
+    vrg:
+      conditions:
+      - state: ok ✅
+        type: DataReady
+      - state: ok ✅
+        type: ClusterDataReady
+      - state: ok ✅
+        type: ClusterDataProtected
+      - state: ok ✅
+        type: KubeObjectsReady
+      - state: ok ✅
+        type: NoClusterDataConflict
+      deleted:
+        state: ok ✅
+      name: appset-deploy-rbd
+      namespace: e2e-appset-deploy-rbd
+      protectedPVCs:
+      - conditions:
+        - state: ok ✅
+          type: DataReady
+        - state: ok ✅
+          type: ClusterDataProtected
+        deleted:
+          state: ok ✅
+        name: busybox-pvc
+        namespace: e2e-appset-deploy-rbd
+        phase:
+          state: ok ✅
+          value: Bound
+        replication: volrep
+      state:
+        description: Waiting to become "Secondary"
+        state: problem ❌
+        value: Primary
+build:
+  commit: 6f4877ad40d5de77a365277348e61cd95aadfff4
+  version: v0.11.1
+config:
+  clusterSet: default
+  clusters:
+    c1:
+      kubeconfig: /Users/nir/.config/drenv/rdr/kubeconfigs/dr1
+    c2:
+      kubeconfig: /Users/nir/.config/drenv/rdr/kubeconfigs/dr2
+    hub:
+      kubeconfig: /Users/nir/.config/drenv/rdr/kubeconfigs/hub
+    passive-hub:
+      kubeconfig: ""
+  distro: k8s
+  namespaces:
+    argocdNamespace: argocd
+    ramenDRClusterNamespace: ramen-system
+    ramenHubNamespace: ramen-system
+    ramenOpsNamespace: ramen-ops
+created: "2025-09-09T15:25:23.49423+03:00"
+duration: 0.197404458
+host:
+  arch: arm64
+  cpus: 12
+  os: darwin
+name: validate-application
+namespaces:
+- argocd
+- e2e-appset-deploy-rbd
+status: failed
+steps:
+- duration: 0.02370925
+  name: validate config
+  status: passed
+- duration: 0.173695208
+  items:
+  - duration: 0.002636292
+    name: inspect application
+    status: passed
+  - duration: 0.088981917
+    name: gather "dr1"
+    status: passed
+  - duration: 0.08920625
+    name: gather "dr2"
+    status: passed
+  - duration: 0.165706958
+    name: gather "hub"
+    status: passed
+  - duration: 0.005000916
+    name: validate data
+    status: failed
+  name: validate application
+  status: failed
+summary:
+  error: 3
+  ok: 26
+  stale: 0

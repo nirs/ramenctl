@@ -1,0 +1,140 @@
+build:
+  commit: 6f4877ad40d5de77a365277348e61cd95aadfff4
+  version: v0.11.1
+clustersStatus:
+  clusters:
+  - name: dr1
+    ramen:
+      configmap:
+        deleted:
+          state: ok ✅
+        name: ramen-dr-cluster-operator-config
+        namespace: ramen-system
+        ramenControllerType:
+          state: ok ✅
+          value: dr-cluster
+        s3StoreProfiles:
+          description: No s3 profiles found
+          state: problem ❌
+      deployment:
+        conditions:
+        - state: ok ✅
+          type: Available
+        - state: ok ✅
+          type: Progressing
+        deleted:
+          state: ok ✅
+        name: ramen-dr-cluster-operator
+        namespace: ramen-system
+        replicas:
+          state: ok ✅
+          value: 1
+  - name: dr2
+    ramen:
+      configmap:
+        deleted:
+          state: ok ✅
+        name: ramen-dr-cluster-operator-config
+        namespace: ramen-system
+        ramenControllerType:
+          state: ok ✅
+          value: dr-cluster
+        s3StoreProfiles:
+          description: No s3 profiles found
+          state: problem ❌
+      deployment:
+        conditions:
+        - state: ok ✅
+          type: Available
+        - state: ok ✅
+          type: Progressing
+        deleted:
+          state: ok ✅
+        name: ramen-dr-cluster-operator
+        namespace: ramen-system
+        replicas:
+          state: ok ✅
+          value: 1
+  hub:
+    drClusters:
+      description: 2 DRClusters required, 0 found
+      state: problem ❌
+    drPolicies:
+      description: No DRPolicies found
+      state: problem ❌
+    ramen:
+      configmap:
+        deleted:
+          state: ok ✅
+        name: ramen-hub-operator-config
+        namespace: ramen-system
+        ramenControllerType:
+          state: ok ✅
+          value: dr-hub
+        s3StoreProfiles:
+          description: No s3 profiles found
+          state: problem ❌
+      deployment:
+        conditions:
+        - state: ok ✅
+          type: Available
+        - state: ok ✅
+          type: Progressing
+        deleted:
+          state: ok ✅
+        name: ramen-hub-operator
+        namespace: ramen-system
+        replicas:
+          state: ok ✅
+          value: 1
+config:
+  clusterSet: default
+  clusters:
+    c1:
+      kubeconfig: /Users/nir/.config/drenv/rdr/kubeconfigs/dr1
+    c2:
+      kubeconfig: /Users/nir/.config/drenv/rdr/kubeconfigs/dr2
+    hub:
+      kubeconfig: /Users/nir/.config/drenv/rdr/kubeconfigs/hub
+    passive-hub:
+      kubeconfig: ""
+  distro: k8s
+  namespaces:
+    argocdNamespace: argocd
+    ramenDRClusterNamespace: ramen-system
+    ramenHubNamespace: ramen-system
+    ramenOpsNamespace: ramen-ops
+created: "2025-09-09T15:05:40.566035+03:00"
+duration: 0.954083041
+host:
+  arch: arm64
+  cpus: 12
+  os: darwin
+name: validate-clusters
+namespaces:
+- ramen-system
+status: failed
+steps:
+- duration: 0.015631125
+  name: validate config
+  status: passed
+- duration: 0.938451916
+  items:
+  - duration: 0.458748584
+    name: gather "hub"
+    status: passed
+  - duration: 0.93400875
+    name: gather "dr1"
+    status: passed
+  - duration: 0.934018292
+    name: gather "dr2"
+    status: passed
+  - duration: 0.004229875
+    name: validate clusters data
+    status: failed
+  name: validate clusters
+  status: failed
+summary:
+  error: 5
+  ok: 18
+  stale: 0

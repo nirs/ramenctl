@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Validation Report - Wireframe</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 24px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .header-content {
+            flex: 1;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .header-meta {
+            display: flex;
+            gap: 24px;
+            font-size: 14px;
+            opacity: 0.9;
+            flex-wrap: wrap;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            background: rgba(255,255,255,0.2);
+            height: 100%;
+            min-height: 60px;
+        }
+
+        .status-badge.failed {
+            background: #ef4444;
+        }
+
+        .status-badge.passed {
+            background: #10b981;
+        }
+
+        /* Clusters Section - Most Important */
+        .clusters-section {
+            padding: 32px;
+            background: #fafafa;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .clusters-section h2 {
+            font-size: 20px;
+            margin-bottom: 24px;
+            color: #1f2937;
+        }
+
+        .clusters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 24px;
+        }
+
+        /* Responsive: switch to 2 columns earlier */
+        @media (max-width: 1600px) {
+            .clusters-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Responsive: stack vertically on smaller screens */
+        @media (max-width: 1100px) {
+            .clusters-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .cluster-card {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .cluster-card.hub {
+            border-left: 4px solid #3b82f6;
+        }
+
+        .cluster-card.primary {
+            border-left: 4px solid #f59e0b;
+        }
+
+        .cluster-card.secondary {
+            border-left: 4px solid #9ca3af;
+        }
+
+        .cluster-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .cluster-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        /* Compact validation items - one line each */
+        .validation-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            margin: 4px 0;
+            border-radius: 4px;
+            background: #f9fafb;
+            font-size: 14px;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .validation-item:hover {
+            background: #f3f4f6;
+        }
+
+        .validation-item-label {
+            flex: 0 0 150px;
+            font-weight: 500;
+            color: #4b5563;
+            min-width: 0;
+        }
+
+        .validation-item-value {
+            flex: 1;
+            color: #1f2937;
+            min-width: 0;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .validation-item-state {
+            flex: 0 0 110px;
+            text-align: left;
+            min-width: 110px;
+            flex-shrink: 0;
+        }
+
+        .state-ok {
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        .state-problem {
+            color: #ef4444;
+            font-weight: 600;
+        }
+
+        /* Nested sections within cluster */
+        .cluster-section {
+            margin-top: 16px;
+        }
+
+        .cluster-section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #6b7280;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* PVCs list */
+        .pvc-item {
+            background: #f9fafb;
+            border-left: 3px solid #d1d5db;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 4px;
+        }
+
+        .pvc-name {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        /* Details Section */
+        .details-section {
+            padding: 24px 32px;
+        }
+
+        .details-section h3 {
+            font-size: 20px;
+            color: #1f2937;
+            margin-bottom: 24px;
+        }
+
+        .details-content {
+            padding: 0;
+        }
+
+        /* Compact field groups - side by side */
+        .field-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        /* Group layout with indented key-value pairs */
+        .group-item {
+            background: white;
+            padding: 12px;
+            border-radius: 4px;
+            border: 1px solid #e5e7eb;
+            font-size: 14px;
+            font-family: 'Monaco', 'Menlo', 'Courier New', monospace;
+        }
+
+        .group-title {
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .group-field {
+            margin-left: 16px;
+            margin-top: 4px;
+            color: #1f2937;
+        }
+
+        .group-field-key {
+            color: #6b7280;
+        }
+
+        .group-field-value {
+            color: #1f2937;
+            font-weight: 500;
+        }
+
+        .group-field-value.ok {
+            color: #10b981;
+        }
+
+        .group-field-value.error {
+            color: #ef4444;
+        }
+
+        .group-field-value.stale {
+            color: #6b7280;
+        }
+
+        /* Details layout: boxes on left, steps on right */
+        .details-layout {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 24px;
+            align-items: start;
+        }
+
+        @media (max-width: 1000px) {
+            .details-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .steps-section {
+            position: sticky;
+            top: 20px;
+        }
+
+        .namespace-tag {
+            display: block;
+            padding: 4px 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            font-size: 13px;
+            margin: 2px 0;
+        }
+
+        /* Steps list */
+        .steps-list {
+            list-style: none;
+        }
+
+        .step-item {
+            padding: 12px;
+            margin: 8px 0;
+            background: white;
+            border-left: 4px solid #d1d5db;
+            border-radius: 4px;
+        }
+
+        .step-item.passed {
+            border-left-color: #10b981;
+        }
+
+        .step-item.failed {
+            border-left-color: #ef4444;
+        }
+
+        .step-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
+        .step-name {
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .step-duration {
+            font-size: 12px;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-content">
+                <h1>Application Validation Report</h1>
+                <div class="header-meta">
+                    <span><strong>Application:</strong> appset-deploy-rbd</span>
+                    <span><strong>Namespace:</strong> argocd</span>
+                </div>
+            </div>
+            <span class="status-badge passed">Status: Passed</span>
+        </div>
+
+        <!-- Clusters Section - Most Important, Side by Side -->
+        <div class="clusters-section">
+            <h2>Cluster Status</h2>
+            <div class="clusters-grid">
+                <!-- Hub Cluster -->
+                <div class="cluster-card hub">
+                    <div class="cluster-header">
+                        <div class="cluster-name">Hub</div>
+                    </div>
+                    
+                    <div class="cluster-section">
+                        <div class="cluster-section-title">DRPC</div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">Action</span>
+                            <span class="validation-item-value">—</span>
+                            <span class="validation-item-state state-ok">✅ ok</span>
+                        </div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">Phase</span>
+                            <span class="validation-item-value">Deployed</span>
+                            <span class="validation-item-state state-ok">✅ ok</span>
+                        </div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">Progression</span>
+                            <span class="validation-item-value">Completed</span>
+                            <span class="validation-item-state state-ok">✅ ok</span>
+                        </div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">DR Policy</span>
+                            <span class="validation-item-value">dr-policy</span>
+                            <span class="validation-item-state state-ok">✅ ok</span>
+                        </div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">Deleted</span>
+                            <span class="validation-item-value">—</span>
+                            <span class="validation-item-state state-ok">✅ ok</span>
+                        </div>
+                        
+                        <div class="cluster-section-title" style="margin-top: 16px;">Conditions</div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">Available</span>
+                            <span class="validation-item-value">—</span>
+                            <span class="validation-item-state state-ok">✅ ok</span>
+                        </div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">PeerReady</span>
+                            <span class="validation-item-value">—</span>
+                            <span class="validation-item-state state-ok">✅ ok</span>
+                        </div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">Protected</span>
+                            <span class="validation-item-value">—</span>
+                            <span class="validation-item-state state-ok">✅ ok</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Primary Cluster -->
+                <div class="cluster-card primary">
+                    <div class="cluster-header">
+                        <div class="cluster-name">Primary Cluster: dr1</div>
+                    </div>
+                    
+                    <div class="cluster-section">
+                        <div class="cluster-section-title">VRG</div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">Name</span>
+                            <span class="validation-item-value">appset-deploy-rbd</span>
+                            <span class="validation-item-state state-ok">✅ ok</span>
+                        </div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">Namespace</span>
+                            <span class="validation-item-value">e2e-appset-deploy-rbd</span>
+                            <span class="validation-item-state state-ok">✅ ok</span>
+                        </div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">State</span>
+                            <span class="validation-item-value">Primary</span>
+                            <span class="validation-item-state state-ok">✅ ok</span>
+                        </div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">Deleted</span>
+                            <span class="validation-item-value">—</span>
+                            <span class="validation-item-state state-ok">✅ ok</span>
+                        </div>
+                        
+                        <div class="cluster-section-title" style="margin-top: 16px;">Conditions</div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">DataReady</span>
+                            <span class="validation-item-value">—</span>
+                            <span class="validation-item-state state-ok">✅ ok</span>
+                        </div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">ClusterDataReady</span>
+                            <span class="validation-item-value">—</span>
+                            <span class="validation-item-state state-ok">✅ ok</span>
+                        </div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">ClusterDataProtected</span>
+                            <span class="validation-item-value">—</span>
+                            <span class="validation-item-state state-ok">✅ ok</span>
+                        </div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">KubeObjectsReady</span>
+                            <span class="validation-item-value">—</span>
+                            <span class="validation-item-state state-ok">✅ ok</span>
+                        </div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">NoClusterDataConflict</span>
+                            <span class="validation-item-value">—</span>
+                            <span class="validation-item-state state-ok">✅ ok</span>
+                        </div>
+                        
+                        <div class="cluster-section-title" style="margin-top: 16px;">Protected PVCs</div>
+                        <div class="pvc-item">
+                            <div class="pvc-name">busybox-pvc</div>
+                            <div class="validation-item">
+                                <span class="validation-item-label">Phase</span>
+                                <span class="validation-item-value">Bound</span>
+                                <span class="validation-item-state state-ok">✅ ok</span>
+                            </div>
+                            <div class="validation-item">
+                                <span class="validation-item-label">Replication</span>
+                                <span class="validation-item-value">volrep</span>
+                                <span class="validation-item-state state-ok">✅ ok</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Secondary Cluster -->
+                <div class="cluster-card secondary">
+                    <div class="cluster-header">
+                        <div class="cluster-name">Secondary Cluster: dr2</div>
+                    </div>
+                    
+                    <div class="cluster-section">
+                        <div class="cluster-section-title">VRG</div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">Name</span>
+                            <span class="validation-item-value">appset-deploy-rbd</span>
+                            <span class="validation-item-state state-ok">✅ ok</span>
+                        </div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">Namespace</span>
+                            <span class="validation-item-value">e2e-appset-deploy-rbd</span>
+                            <span class="validation-item-state state-ok">✅ ok</span>
+                        </div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">State</span>
+                            <span class="validation-item-value">Secondary</span>
+                            <span class="validation-item-state state-ok">✅ ok</span>
+                        </div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">Deleted</span>
+                            <span class="validation-item-value">—</span>
+                            <span class="validation-item-state state-ok">✅ ok</span>
+                        </div>
+                        
+                        <div class="cluster-section-title" style="margin-top: 16px;">Conditions</div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">NoClusterDataConflict</span>
+                            <span class="validation-item-value">—</span>
+                            <span class="validation-item-state state-ok">✅ ok</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Details Section -->
+        <div class="details-section">
+            <h3>Report Details</h3>
+            <div class="details-content">
+                <div class="details-layout">
+                    <!-- Left side: Boxes -->
+                    <div>
+                        <div class="field-group">
+                            <!-- Build -->
+                            <div class="group-item">
+                                <div class="group-title">build</div>
+                                <div class="group-field">
+                                    <span class="group-field-key">version:</span> <span class="group-field-value">v0.11.1</span>
+                                </div>
+                                <div class="group-field">
+                                    <span class="group-field-key">commit:</span> <span class="group-field-value" title="6f4877ad40d5de77a365277348e61cd95aadfff4">6f4877a</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Host -->
+                            <div class="group-item">
+                                <div class="group-title">host</div>
+                                <div class="group-field">
+                                    <span class="group-field-key">os:</span> <span class="group-field-value">darwin</span>
+                                </div>
+                                <div class="group-field">
+                                    <span class="group-field-key">arch:</span> <span class="group-field-value">arm64</span>
+                                </div>
+                                <div class="group-field">
+                                    <span class="group-field-key">cpus:</span> <span class="group-field-value">12</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Summary -->
+                            <div class="group-item">
+                                <div class="group-title">summary</div>
+                                <div class="group-field">
+                                    <span class="group-field-key">ok:</span> <span class="group-field-value ok">21</span>
+                                </div>
+                                <div class="group-field">
+                                    <span class="group-field-key">error:</span> <span class="group-field-value error">0</span>
+                                </div>
+                                <div class="group-field">
+                                    <span class="group-field-key">stale:</span> <span class="group-field-value stale">0</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Cluster -->
+                            <div class="group-item">
+                                <div class="group-title">cluster</div>
+                                <div class="group-field">
+                                    <span class="group-field-key">distro:</span> <span class="group-field-value">k8s</span>
+                                </div>
+                                <div class="group-field">
+                                    <span class="group-field-key">clusterset:</span> <span class="group-field-value">default</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Namespaces -->
+                            <div class="group-item">
+                                <div class="group-title">namespaces</div>
+                                <div class="group-field">
+                                    <span class="namespace-tag">argocd</span>
+                                </div>
+                                <div class="group-field">
+                                    <span class="namespace-tag">e2e-appset-deploy-rbd</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Timing -->
+                            <div class="group-item">
+                                <div class="group-title">timing</div>
+                                <div class="group-field">
+                                    <span class="group-field-key">created:</span> <span class="group-field-value">2025-09-09 15:24:25</span>
+                                </div>
+                                <div class="group-field">
+                                    <span class="group-field-key">duration:</span> <span class="group-field-value">0.127s</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right side: Steps -->
+                    <div class="steps-section">
+                        <h4 style="margin-bottom: 12px; color: #374151;">Steps</h4>
+                        <ul class="steps-list">
+                            <li class="step-item passed">
+                                <div class="step-header">
+                                    <span class="step-name">validate config</span>
+                                    <span class="step-duration">0.014s</span>
+                                </div>
+                            </li>
+                            <li class="step-item passed">
+                                <div class="step-header">
+                                    <span class="step-name">validate application</span>
+                                    <span class="step-duration">0.113s</span>
+                                </div>
+                                <ul style="margin-top: 8px; margin-left: 20px; list-style: none;">
+                                    <li class="step-item passed" style="margin: 4px 0;">
+                                        <div class="step-header">
+                                            <span class="step-name">inspect application</span>
+                                            <span class="step-duration">0.002s</span>
+                                        </div>
+                                    </li>
+                                    <li class="step-item passed" style="margin: 4px 0;">
+                                        <div class="step-header">
+                                            <span class="step-name">gather "dr2"</span>
+                                            <span class="step-duration">0.084s</span>
+                                        </div>
+                                    </li>
+                                    <li class="step-item passed" style="margin: 4px 0;">
+                                        <div class="step-header">
+                                            <span class="step-name">gather "dr1"</span>
+                                            <span class="step-duration">0.089s</span>
+                                        </div>
+                                    </li>
+                                    <li class="step-item passed" style="margin: 4px 0;">
+                                        <div class="step-header">
+                                            <span class="step-name">gather "hub"</span>
+                                            <span class="step-duration">0.109s</span>
+                                        </div>
+                                    </li>
+                                    <li class="step-item passed" style="margin: 4px 0;">
+                                        <div class="step-header">
+                                            <span class="step-name">validate data</span>
+                                            <span class="step-duration">0.002s</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
