@@ -107,22 +107,6 @@ body {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.cluster-card.hub {
-    border-left: 4px solid #3b82f6;
-}
-
-.cluster-card.primary {
-    border-left: 4px solid #f59e0b;
-}
-
-.cluster-card.secondary {
-    border-left: 4px solid #9ca3af;
-}
-
-.cluster-card.dr-cluster {
-    border-left: 4px solid #10b981;
-}
-
 .cluster-header {
     display: flex;
     justify-content: space-between;
