@@ -359,48 +359,7 @@
                     </div>
                     
                     <div class="cluster-section">
-                        <div class="cluster-section-title">DR Clusters</div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Status</span>
-                            <span class="validation-item-value">2 DRClusters required, 0 found</span>
-                            <span class="validation-item-state state-problem" aria-label="problem">❌</span>
-                        </div>
-                        
-                        <div class="cluster-section-title" style="margin-top: 16px;">DR Policies</div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Status</span>
-                            <span class="validation-item-value">No DRPolicies found</span>
-                            <span class="validation-item-state state-problem" aria-label="problem">❌</span>
-                        </div>
-                        
-                        <div class="cluster-section-title" style="margin-top: 16px;">Ramen ConfigMap</div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Name</span>
-                            <span class="validation-item-value">ramen-hub-operator-config</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Namespace</span>
-                            <span class="validation-item-value">ramen-system</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Controller Type</span>
-                            <span class="validation-item-value">dr-hub</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">S3 Store Profiles</span>
-                            <span class="validation-item-value">No s3 profiles found</span>
-                            <span class="validation-item-state state-problem" aria-label="problem">❌</span>
-                        </div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Deleted</span>
-                            <span class="validation-item-value">—</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        
-                        <div class="cluster-section-title" style="margin-top: 16px;">Ramen Deployment</div>
+                        <div class="cluster-section-title">Ramen Deployment</div>
                         <div class="validation-item">
                             <span class="validation-item-label">Name</span>
                             <span class="validation-item-value">ramen-hub-operator</span>
@@ -433,20 +392,11 @@
                             <span class="validation-item-value">—</span>
                             <span class="validation-item-state state-ok" aria-label="ok">✅</span>
                         </div>
-                    </div>
-                </div>
-
-                <!-- DR Cluster 1 -->
-                <div class="cluster-card dr-cluster">
-                    <div class="cluster-header">
-                        <div class="cluster-name">dr1</div>
-                    </div>
-                    
-                    <div class="cluster-section">
-                        <div class="cluster-section-title">Ramen ConfigMap</div>
+                        
+                        <div class="cluster-section-title" style="margin-top: 16px;">Ramen ConfigMap</div>
                         <div class="validation-item">
                             <span class="validation-item-label">Name</span>
-                            <span class="validation-item-value">ramen-dr-cluster-operator-config</span>
+                            <span class="validation-item-value">ramen-hub-operator-config</span>
                             <span class="validation-item-state state-ok" aria-label="ok">✅</span>
                         </div>
                         <div class="validation-item">
@@ -456,7 +406,7 @@
                         </div>
                         <div class="validation-item">
                             <span class="validation-item-label">Controller Type</span>
-                            <span class="validation-item-value">dr-cluster</span>
+                            <span class="validation-item-value">dr-hub</span>
                             <span class="validation-item-state state-ok" aria-label="ok">✅</span>
                         </div>
                         <div class="validation-item">
@@ -470,7 +420,30 @@
                             <span class="validation-item-state state-ok" aria-label="ok">✅</span>
                         </div>
                         
-                        <div class="cluster-section-title" style="margin-top: 16px;">Ramen Deployment</div>
+                        <div class="cluster-section-title" style="margin-top: 16px;">DR Clusters</div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">Status</span>
+                            <span class="validation-item-value">2 DRClusters required, 0 found</span>
+                            <span class="validation-item-state state-problem" aria-label="problem">❌</span>
+                        </div>
+                        
+                        <div class="cluster-section-title" style="margin-top: 16px;">DR Policies</div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">Status</span>
+                            <span class="validation-item-value">No DRPolicies found</span>
+                            <span class="validation-item-state state-problem" aria-label="problem">❌</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DR Cluster 1 -->
+                <div class="cluster-card dr-cluster">
+                    <div class="cluster-header">
+                        <div class="cluster-name">dr1</div>
+                    </div>
+                    
+                    <div class="cluster-section">
+                        <div class="cluster-section-title">Ramen Deployment</div>
                         <div class="validation-item">
                             <span class="validation-item-label">Name</span>
                             <span class="validation-item-value">ramen-dr-cluster-operator</span>
@@ -500,6 +473,33 @@
                         </div>
                         <div class="validation-item">
                             <span class="validation-item-label">Progressing</span>
+                            <span class="validation-item-value">—</span>
+                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
+                        </div>
+                        
+                        <div class="cluster-section-title" style="margin-top: 16px;">Ramen ConfigMap</div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">Name</span>
+                            <span class="validation-item-value">ramen-dr-cluster-operator-config</span>
+                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
+                        </div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">Namespace</span>
+                            <span class="validation-item-value">ramen-system</span>
+                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
+                        </div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">Controller Type</span>
+                            <span class="validation-item-value">dr-cluster</span>
+                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
+                        </div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">S3 Store Profiles</span>
+                            <span class="validation-item-value">No s3 profiles found</span>
+                            <span class="validation-item-state state-problem" aria-label="problem">❌</span>
+                        </div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">Deleted</span>
                             <span class="validation-item-value">—</span>
                             <span class="validation-item-state state-ok" aria-label="ok">✅</span>
                         </div>
@@ -513,34 +513,7 @@
                     </div>
                     
                     <div class="cluster-section">
-                        <div class="cluster-section-title">Ramen ConfigMap</div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Name</span>
-                            <span class="validation-item-value">ramen-dr-cluster-operator-config</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Namespace</span>
-                            <span class="validation-item-value">ramen-system</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Controller Type</span>
-                            <span class="validation-item-value">dr-cluster</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">S3 Store Profiles</span>
-                            <span class="validation-item-value">No s3 profiles found</span>
-                            <span class="validation-item-state state-problem" aria-label="problem">❌</span>
-                        </div>
-                        <div class="validation-item">
-                            <span class="validation-item-label">Deleted</span>
-                            <span class="validation-item-value">—</span>
-                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
-                        </div>
-                        
-                        <div class="cluster-section-title" style="margin-top: 16px;">Ramen Deployment</div>
+                        <div class="cluster-section-title">Ramen Deployment</div>
                         <div class="validation-item">
                             <span class="validation-item-label">Name</span>
                             <span class="validation-item-value">ramen-dr-cluster-operator</span>
@@ -570,6 +543,33 @@
                         </div>
                         <div class="validation-item">
                             <span class="validation-item-label">Progressing</span>
+                            <span class="validation-item-value">—</span>
+                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
+                        </div>
+                        
+                        <div class="cluster-section-title" style="margin-top: 16px;">Ramen ConfigMap</div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">Name</span>
+                            <span class="validation-item-value">ramen-dr-cluster-operator-config</span>
+                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
+                        </div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">Namespace</span>
+                            <span class="validation-item-value">ramen-system</span>
+                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
+                        </div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">Controller Type</span>
+                            <span class="validation-item-value">dr-cluster</span>
+                            <span class="validation-item-state state-ok" aria-label="ok">✅</span>
+                        </div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">S3 Store Profiles</span>
+                            <span class="validation-item-value">No s3 profiles found</span>
+                            <span class="validation-item-state state-problem" aria-label="problem">❌</span>
+                        </div>
+                        <div class="validation-item">
+                            <span class="validation-item-label">Deleted</span>
                             <span class="validation-item-value">—</span>
                             <span class="validation-item-state state-ok" aria-label="ok">✅</span>
                         </div>
