@@ -86,20 +86,6 @@ body {
     gap: 20px;
 }
 
-/* Responsive: switch to 2 columns earlier */
-@media (max-width: 1600px) {
-    .clusters-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-/* Responsive: stack vertically on smaller screens */
-@media (max-width: 1100px) {
-    .clusters-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
 .cluster-card {
     background: white;
     border-radius: 8px;
