@@ -322,7 +322,8 @@ body {
     padding: 4px 8px;
     background: #e5e7eb;
     border-radius: 8px;
-    font-size: 13px;
+    font-size: 14px;
+    font-weight: 600;
     margin: 2px 0;
 }
 
