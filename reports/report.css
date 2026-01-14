@@ -28,7 +28,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 24px;
+    gap: 20px;
 }
 
 .header-content {
@@ -42,7 +42,7 @@ body {
 
 .header-meta {
     display: flex;
-    gap: 24px;
+    gap: 20px;
     font-size: 14px;
     opacity: 0.9;
     flex-wrap: wrap;
@@ -83,7 +83,7 @@ body {
 .clusters-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-    gap: 24px;
+    gap: 20px;
 }
 
 /* Responsive: switch to 2 columns earlier */
@@ -112,12 +112,12 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 16px;
-    padding-bottom: 12px;
+    padding-bottom: 10px;
     border-bottom: 1px solid #e5e7eb;
 }
 
 .cluster-name {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
     color: #1f2937;
 }
@@ -291,7 +291,7 @@ body {
 .details-layout {
     display: grid;
     grid-template-columns: 1fr 400px;
-    gap: 24px;
+    gap: 20px;
     align-items: start;
 }
 
