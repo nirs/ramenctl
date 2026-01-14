@@ -139,14 +139,14 @@ body {
 
 .validation-item-label {
     flex: 0 0 150px;
-    font-weight: 500;
     color: #4b5563;
     min-width: 0;
 }
 
 .validation-item-value {
     flex: 1;
-    color: #1f2937;
+    color: #000000;
+    font-weight: 600;
     min-width: 0;
     word-wrap: break-word;
     overflow-wrap: break-word;
@@ -161,12 +161,10 @@ body {
 
 .state-ok {
     color: #10b981;
-    font-weight: 600;
 }
 
 .state-problem {
     color: #ee0000;
-    font-weight: 600;
 }
 
 .state-icon {
@@ -198,7 +196,7 @@ body {
 
 .pvc-name {
     font-weight: 600;
-    color: #1f2937;
+    color: #000000;
     margin-bottom: 8px;
 }
 
@@ -213,7 +211,7 @@ body {
 
 .list-item-name {
     font-weight: 600;
-    color: #1f2937;
+    color: #000000;
     margin-bottom: 8px;
 }
 
@@ -273,8 +271,8 @@ body {
 .group-field-value {
     flex: 1;
     min-width: 0;
-    color: #1f2937;
-    font-weight: 500;
+    color: #000000;
+    font-weight: 600;
 }
 
 .group-field-value.ok {
