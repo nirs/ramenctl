@@ -257,16 +257,22 @@ body {
 }
 
 .group-field {
+    display: flex;
+    align-items: center;
     margin-left: 16px;
     margin-top: 4px;
     color: #1f2937;
 }
 
 .group-field-key {
+    flex: 0 0 75px;
     color: #6b7280;
+    min-width: 0;
 }
 
 .group-field-value {
+    flex: 1;
+    min-width: 0;
     color: #1f2937;
     font-weight: 500;
 }
