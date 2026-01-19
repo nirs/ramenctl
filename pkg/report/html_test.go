@@ -4,6 +4,7 @@
 package report
 
 import (
+	"html/template"
 	"os"
 	"strings"
 	"testing"
@@ -71,5 +72,61 @@ func TestIncludeIndent(t *testing.T) {
 	}
 	if got != string(expected) {
 		t.Errorf("output mismatch:\n%s", helpers.UnifiedDiff(t, string(expected), got))
+	}
+}
+
+func TestIndentEscaped(t *testing.T) {
+	const spaces = 4
+
+	tests := []struct {
+		name   string
+		input  string
+		output string
+	}{
+		{
+			name:   "no newlines",
+			input:  "one line",
+			output: "one line",
+		},
+		{
+			name:   "two lines",
+			input:  "first\nsecond",
+			output: "first\n    second",
+		},
+		{
+			name:   "trailing newline",
+			input:  "first\nsecond\n",
+			output: "first\n    second\n",
+		},
+		{
+			name:   "blank line",
+			input:  "first\n\nsecond",
+			output: "first\n\n    second",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			htmlInput := template.HTML(tt.input) // #nosec G203
+			got, err := indentEscaped(spaces, htmlInput)
+			if err != nil {
+				t.Fatal(err)
+			}
+			htmlOutput := template.HTML(tt.output) // #nosec G203
+			if got != htmlOutput {
+				t.Errorf("Want %q, got %q", tt.output, got)
+			}
+		})
+	}
+}
+
+func BenchmarkIndentLines(b *testing.B) {
+	// Size based on validate-clusters.html design draft (~1000 lines, ~50
+	// chars/line).
+	line := strings.Repeat("x", 50) + "\n"
+	text := strings.Repeat(line, 1000)
+
+	b.ResetTimer()
+	for range b.N {
+		indentLines(8, text)
 	}
 }

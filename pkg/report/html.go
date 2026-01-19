@@ -92,19 +92,35 @@ func includeCSS(tmpl *template.Template, name string, data any) (template.CSS, e
 	return template.CSS(buf.String()), nil // #nosec G203
 }
 
-// indentEscaped adds leading spaces to all lines except the first. It preserves
-// the input type (template.HTML or template.CSS) without escaping. Must be
-// called with output from includeHTML or includeCSS.
+// indentEscaped adds leading spaces to all lines except the first. Blank lines
+// are not indented (avoids trailing whitespace). It preserves the input type
+// (template.HTML or template.CSS) without escaping. Must be called with output
+// from includeHTML or includeCSS.
 func indentEscaped(spaces int, s any) (any, error) {
-	indent := strings.Repeat(" ", spaces)
 	switch v := s.(type) {
 	case template.HTML:
-		return template.HTML(strings.ReplaceAll(string(v), "\n", "\n"+indent)), nil // #nosec G203
+		return template.HTML(indentLines(spaces, string(v))), nil // #nosec G203
 	case template.CSS:
-		return template.CSS(strings.ReplaceAll(string(v), "\n", "\n"+indent)), nil // #nosec G203
+		return template.CSS(indentLines(spaces, string(v))), nil // #nosec G203
 	default:
 		return nil, fmt.Errorf("indent: unsupported type %T", s)
 	}
+}
+
+// indentLines adds leading spaces to all lines except the first.
+// Blank lines are not indented (avoids trailing whitespace).
+func indentLines(spaces int, text string) string {
+	indent := strings.Repeat(" ", spaces)
+	lines := strings.Split(text, "\n")
+
+	// Start at 1 to keep the first line as is.
+	for i := 1; i < len(lines); i++ {
+		if lines[i] != "" {
+			lines[i] = indent + lines[i]
+		}
+	}
+
+	return strings.Join(lines, "\n")
 }
 
 // HeaderData provides data for the report template.
