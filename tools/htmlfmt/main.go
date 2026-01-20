@@ -12,7 +12,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/yosssi/gohtml"
+	"github.com/ramendr/ramenctl/pkg/report"
 )
 
 func main() {
@@ -29,7 +29,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	formatted := gohtml.Format(string(data)) + "\n"
+	formatted := report.FormatHTML(string(data))
 
 	if err := os.WriteFile(filename, []byte(formatted), 0o640); err != nil {
 		fmt.Fprintf(os.Stderr, "Error writing %s: %v\n", filename, err)
