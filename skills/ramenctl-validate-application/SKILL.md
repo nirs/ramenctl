@@ -1,0 +1,190 @@
+---
+name: ramenctl-validate-application
+description: >-
+  Validate a DR-protected application using ramenctl validate application.
+  Use when the user wants to check an application is ok, check application
+  DR health, troubleshoot a protected application, or verify application
+  status after failover/relocate. When triaging or reporting bugs, also
+  suggest ramenctl validate clusters so the user has both the app report
+  and the cluster-wide DR report.
+---
+
+# ramenctl validate application
+
+Validate a specific DR-protected application by gathering related namespaces
+from all clusters and S3 data, and inspecting the gathered resources.
+
+## Prerequisites
+
+- `ramenctl` installed
+- A configuration file with cluster kubeconfigs (see ramenctl-init skill)
+- At least one DR-protected application in the clusters
+
+## Workflow
+
+### Step 1: Look up protected applications
+
+List DRPCs on the hub using the hub kubeconfig from the ramenctl config file:
+
+```console
+$ kubectl get drpc -A --kubeconfig <hub-kubeconfig>
+NAMESPACE   NAME                   AGE   PREFERREDCLUSTER   FAILOVERCLUSTER   DESIREDSTATE   CURRENTSTATE
+argocd      appset-deploy-rbd      69m   dr1                dr2               Relocate       Relocated
+```
+
+Present the list and let the user choose which application to validate.
+The `NAME` and `NAMESPACE` columns map to the `--name` and `--namespace`
+flags.
+
+### Step 2: Run validate application
+
+Use `<env>/<app-name>` for the output directory, e.g., `myenv/myapp`.
+
+```console
+$ ramenctl validate application --name <drpc-name> --namespace <namespace> -o <output-dir> --interactive=false
+```
+
+`--interactive=false` prevents ramenctl from opening a browser—you open the
+report yourself in Step 4.
+
+Use `--config <file>` if the config file is not the default `config.yaml`.
+
+The command takes a few seconds on local clusters and about a minute on
+remote clusters.
+
+### Step 3: Check the result
+
+**On success:**
+
+```console
+✅ Validation completed (N ok, 0 warning, 0 problem)
+```
+
+**On problems** the command exits with a non-zero exit code:
+
+```console
+❌ Validation completed (N ok, M warning, P problem)
+```
+
+When validation **finishes and writes a report**, a non-zero exit always means
+there are problems **in** that report. If the command **fails before** a
+report is written (early error), there may be no HTML—use the log and console
+output instead.
+
+### Step 4: Open the HTML report
+
+If `<output-dir>/validate-application.html` exists, open it as soon as `ramenctl
+validate application` has returned. Do this for **both** a fully successful run
+and a completed run that exited non-zero: in the latter case the report always
+describes problems. If the command failed **before** the HTML file was created,
+skip opening—there is nothing to show in the browser yet.
+
+Do **not** skip this step when the HTML file exists unless the user clearly
+does not want the graphical report.
+
+**How to open:** tell them the file path, or run `open` (macOS), `xdg-open`
+(Linux, when available), or open the path in Windows Explorer / `start` on
+the machine that has the file.
+
+### Step 5: Inspect the report
+
+The output directory contains:
+
+| File | Purpose |
+|------|---------|
+| `validate-application.yaml` | Machine and human readable report |
+| `validate-application.html` | HTML report |
+| `validate-application.log` | Detailed log |
+| `validate-application.data/` | Raw resources from all clusters + S3 |
+
+Read the application status:
+
+```console
+$ yq '.applicationStatus' < <output-dir>/validate-application.yaml
+```
+
+#### What the report validates
+
+The `applicationStatus` section in the YAML report validates the
+following. Every item shows `state: ok ✅` when healthy, or a
+problem/warning state with a descriptive message.
+
+**Hub (DRPC):**
+- Exists, DR policy, action (Failover/Relocate), phase, progression
+  (should be Completed for a stable app), conditions (Available,
+  PeerReady, Protected)
+
+**Primary cluster (VRG):**
+- State is Primary, conditions (DataReady, ClusterDataReady,
+  ClusterDataProtected, KubeObjectsReady), protected PVCs with phase
+  (Bound), replication type (volrep/volsync), and PVC conditions
+
+**Secondary cluster (VRG):**
+- State is Secondary, conditions
+
+**S3 profiles:**
+- Application data gathered successfully from each profile
+
+#### Gathered data structure
+
+```console
+$ tree -L3 <output-dir>/validate-application.data
+validate-application.data/
+├── <cluster>/
+│   ├── cluster/
+│   │   ├── namespaces/
+│   │   ├── persistentvolumes/
+│   │   └── storage.k8s.io/
+│   └── namespaces/
+│       └── <app-namespace>/
+├── ...
+└── s3/
+    └── <profile-name>/
+        └── <app-namespace>/
+```
+
+### Step 6: Troubleshoot problems
+
+This section is an **initial draft** — DR troubleshooting is hard and
+needs more playbooks over time (for example a future analyze skill).
+
+If problems were found, help the user understand them:
+
+1. Read the YAML report — look for `state:` values that are not `ok ✅`
+2. Check the log file for error details
+3. Inspect raw resources in `validate-application.data/`
+4. Summarize the findings and suggest what the user should look at
+
+Useful commands for inspecting gathered data:
+
+Check VRG status:
+
+```console
+$ yq '.status' < <output-dir>/validate-application.data/<cluster>/namespaces/<ns>/ramendr.openshift.io/volumereplicationgroups/<name>.yaml
+```
+
+Search ramen operator logs for errors related to the app:
+
+```console
+$ grep -E 'ERROR.+<app-name>' <output-dir>/validate-application.data/<cluster>/namespaces/ramen-system/pods/*/manager/current.log
+```
+
+### Step 7: Suggest validate clusters
+
+After completing the application validation, suggest also running
+`ramenctl validate clusters` into a sibling output directory such as
+`<env>/clusters`. When they agree (or you run it for them), follow the
+**ramenctl-validate-clusters** skill end to end.
+
+Why this helps: the application report covers one DRPC, its namespaces, and
+S3 data (S3 reachability is already tested by the gather step). The cluster
+report adds hub and managed-cluster DR plumbing (operators, DRClusters,
+DRPolicies, ramen configmaps) that the application report does not cover.
+Having both makes it easier to see whether a problem is app-specific or
+infrastructure-wide. If the user already has a fresh cluster validation in
+the same environment, they can skip this.
+
+## Notes
+
+- Secrets in gathered data are automatically sanitized.
+- To report DR issues, archive the entire output directory.
