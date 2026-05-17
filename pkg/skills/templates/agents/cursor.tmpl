@@ -1,0 +1,16 @@
+{{- /* SPDX-FileCopyrightText: The RamenDR authors */ -}}
+{{- /* SPDX-License-Identifier: Apache-2.0 */ -}}
+---
+description: Overview of {{.Command.Name}} for disaster recovery.
+alwaysApply: true
+---
+
+# {{.Command.Name}}
+
+`{{.Command.Name}}` manages disaster recovery for OpenShift and Kubernetes
+clusters. When the user asks for help with a `{{.Command.Name}}` task,
+read the matching skill file before responding. Skills contain required
+steps, flags, and expected output that you need to follow.
+
+Run `{{.Command.Name}} init` to create a configuration file, then use
+`validate`, `gather`, and `test` commands.
