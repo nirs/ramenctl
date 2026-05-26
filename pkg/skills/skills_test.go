@@ -96,6 +96,19 @@ func TestInstallCommandName(t *testing.T) {
 	assertContextContains(t, ".cursor/skills/odf-dr-init/SKILL.md", "odf dr")
 }
 
+func TestValidateClustersUsesExistingConfig(t *testing.T) {
+	t.Chdir(t.TempDir())
+
+	if !skills.Install("ramenctl", skills.AgentBob) {
+		t.Fatal("install failed")
+	}
+
+	path := ".bob/skills/ramenctl-validate-clusters/SKILL.md"
+	assertContextContains(t, path, "If `config.yaml` already exists, do not run `ramenctl init`")
+	assertContextContains(t, path, "If no config file exists, stop and ask the user to complete the")
+	assertContextContains(t, path, "ramenctl-init workflow first")
+}
+
 // Skills write-once.
 
 func TestInstallAllSkipped(t *testing.T) {

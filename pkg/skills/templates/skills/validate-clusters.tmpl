@@ -16,7 +16,11 @@ resources from all clusters, and checking that S3 endpoints are accessible.
 
 ## Requirements
 
-- A configuration file with cluster kubeconfigs (see {{.Command.Slug}}-init skill)
+- A configuration file with cluster kubeconfigs.
+- If `config.yaml` already exists, do not run `{{.Command.Name}} init`; use the
+  existing config file.
+- If no config file exists, stop and ask the user to complete the
+  {{.Command.Slug}}-init workflow first.
 
 ## Workflow
 
