@@ -3,12 +3,17 @@
 # {{.Command.Name}}
 
 `{{.Command.Name}}` manages disaster recovery for OpenShift and Kubernetes
-clusters. When the user asks for help with a `{{.Command.Name}}` task,
-read the matching skill file before responding. Skills contain required
-steps, flags, and expected output that you need to follow.
+clusters.
 
-Run `{{.Command.Name}} init` to create a configuration file, then use
-`validate`, `gather`, and `test` commands.
+## Critical workflow rule
+
+BEFORE taking ANY action on a {{.Command.Name}} task, you MUST:
+1. Identify which ramenctl command the user needs (init, validate, gather, test)
+2. Read the corresponding skill file from .bob/skills/{{.Command.Slug}}-COMMAND/SKILL.md
+3. Follow the exact steps, flags, and workflow documented in the skill
+
+Skills contain required steps, flags, expected output, and troubleshooting
+guidance that you need to follow precisely.
 
 ## Important
 
