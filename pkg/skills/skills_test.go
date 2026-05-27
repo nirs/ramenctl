@@ -78,6 +78,19 @@ func TestInstallCommandName(t *testing.T) {
 	assertContextContains(t, ".cursor/skills/odf-dr-init/SKILL.md", "odf dr")
 }
 
+func TestTestRunSkillDefinesLongCommandBoundary(t *testing.T) {
+	t.Chdir(t.TempDir())
+
+	if !skills.Install("ramenctl", skills.AgentBob) {
+		t.Fatal("install failed")
+	}
+
+	path := ".bob/skills/ramenctl-test-run/SKILL.md"
+	assertContextContains(t, path, "at least 25 minutes")
+	assertContextContains(t, path, "If the current harness cannot set a long enough timeout, do not start")
+	assertContextContains(t, path, "do not retry, restart, or kill the command")
+}
+
 // Multiple agents. Users may run init with different agents in the same
 // directory. Verify that all agents validate regardless of install order.
 

@@ -29,13 +29,18 @@ Ask the user where to store the report. Suggest `out/test`. If the
 directory already exists, suggest a new name like `out/test-2`,
 `out/test-3`, etc.
 
+**This typically takes 15-20 minutes** regardless of the number of test
+cases, since all test cases run in parallel. Before starting, confirm the
+current agent or terminal can let one command run for at least 25 minutes.
+If the current harness cannot set a long enough timeout, do not start the
+command. Ask the user to run it in an external terminal or an agent that
+supports long-running commands, then continue from the generated report.
+
 ```console
 $ {{.Command.Name}} test run -o <output-dir>
 ```
 
-**This typically takes 15-20 minutes** regardless of the number of test
-cases, since all test cases run in parallel. Show the command output in
-the chat so the user can follow the progress.
+Show the command output in the chat so the user can follow the progress.
 
 If the command fails or times out, report to the user and wait for
 instructions — do not retry, restart, or kill the command.
