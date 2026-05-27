@@ -19,19 +19,21 @@ const (
 )
 
 type agent struct {
-	Name        string
-	DisplayName string
-	SkillsDir   string
-	ContextFile string
-	Hint        string
+	Name               string
+	DisplayName        string
+	SkillsDir          string
+	ContextFile        string
+	Hint               string
+	CanRunLongCommands bool
 }
 
 var agents = map[string]agent{
 	AgentCursor: {
-		Name:        AgentCursor,
-		DisplayName: "Cursor",
-		SkillsDir:   ".cursor/skills",
-		ContextFile: ".cursor/rules/ramenctl.mdc",
+		Name:               AgentCursor,
+		DisplayName:        "Cursor",
+		SkillsDir:          ".cursor/skills",
+		ContextFile:        ".cursor/rules/ramenctl.mdc",
+		CanRunLongCommands: true,
 	},
 	AgentClaude: {
 		Name:        AgentClaude,

@@ -54,7 +54,7 @@ func installSkills(cmd Command, agent agent) bool {
 			}
 		}
 
-		content, err := renderSkill(skill, cmd)
+		content, err := renderSkill(skill, cmd, agent)
 		if err != nil {
 			console.Error("%s", err)
 			return false
