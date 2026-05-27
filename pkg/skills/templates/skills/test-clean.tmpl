@@ -32,13 +32,32 @@ inspect.
 Use the same output directory and config file as the test run, e.g.,
 `out/test`:
 
+{{- if .Agent.CanRunLongCommands }}
 ```console
 $ {{.Command.Name}} test clean -o out/test
 ```
 
 The command unprotects and undeploys test applications, then cleans the
 test environment (channels, namespaces). **This typically takes up to 5
-minutes.**
+minutes.** If the command fails or times out, report to the user and wait
+for instructions — do not retry, restart, or kill the command.
+{{- else }}
+Do not start `{{.Command.Name}} test clean` from this agent unless its
+harness is known to support cleanup commands that may run for several
+minutes without force-stopping them.
+
+Ask the user to run the command in a shell or another agent with suitable
+long-command support:
+
+```console
+$ {{.Command.Name}} test clean -o out/test
+```
+
+After the command finishes, continue from the generated clean report. If
+the user reports that clean failed or timed out, inspect the saved
+report/logs and wait for instructions — do not retry, restart, or kill the
+command.
+{{- end }}
 
 ### Step 2: Check the result
 

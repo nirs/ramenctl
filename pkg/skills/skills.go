@@ -44,9 +44,10 @@ var skills = []Skill{
 type skillData struct {
 	Command Command
 	Skill   Skill
+	Agent   agent
 }
 
-func renderSkill(skill Skill, cmd Command) ([]byte, error) {
+func renderSkill(skill Skill, cmd Command, ag agent) ([]byte, error) {
 	tmplPath := "templates/skills/" + skill.Name + ".tmpl"
 
 	content, err := skillsFS.ReadFile(tmplPath)
@@ -59,7 +60,7 @@ func renderSkill(skill Skill, cmd Command) ([]byte, error) {
 		return nil, fmt.Errorf("failed to parse skill template %q: %w", skill.Name, err)
 	}
 
-	data := skillData{Command: cmd, Skill: skill}
+	data := skillData{Command: cmd, Skill: skill, Agent: ag}
 
 	var buf bytes.Buffer
 	if err := t.Execute(&buf, data); err != nil {

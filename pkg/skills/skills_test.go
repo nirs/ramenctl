@@ -79,16 +79,44 @@ func TestInstallCommandName(t *testing.T) {
 }
 
 func TestTestRunSkillDefinesLongCommandBoundary(t *testing.T) {
-	t.Chdir(t.TempDir())
+	for _, tt := range []struct {
+		name          string
+		agent         string
+		skillsDir     string
+		expectRun     string
+		expectHandoff string
+	}{
+		{
+			name:      "cursor runs long command directly",
+			agent:     skills.AgentCursor,
+			skillsDir: ".cursor/skills",
+			expectRun: "Start the command only when",
+		},
+		{
+			name:          "bob hands long command to shell",
+			agent:         skills.AgentBob,
+			skillsDir:     ".bob/skills",
+			expectHandoff: "Do not start `ramenctl test run` from this agent unless its",
+		},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Chdir(t.TempDir())
 
-	if !skills.Install("ramenctl", skills.AgentBob) {
-		t.Fatal("install failed")
+			if !skills.Install("ramenctl", tt.agent) {
+				t.Fatal("install failed")
+			}
+
+			path := filepath.Join(tt.skillsDir, "ramenctl-test-run", "SKILL.md")
+			assertContextContains(t, path, "at least 25")
+			assertContextContains(t, path, "do not retry")
+			if tt.expectRun != "" {
+				assertContextContains(t, path, tt.expectRun)
+			}
+			if tt.expectHandoff != "" {
+				assertContextContains(t, path, tt.expectHandoff)
+			}
+		})
 	}
-
-	path := ".bob/skills/ramenctl-test-run/SKILL.md"
-	assertContextContains(t, path, "at least 25 minutes")
-	assertContextContains(t, path, "If the current harness cannot set a long enough timeout, do not start")
-	assertContextContains(t, path, "do not retry, restart, or kill the command")
 }
 
 // Multiple agents. Users may run init with different agents in the same

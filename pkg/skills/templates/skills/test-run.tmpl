@@ -29,12 +29,10 @@ Ask the user where to store the report. Suggest `out/test`. If the
 directory already exists, suggest a new name like `out/test-2`,
 `out/test-3`, etc.
 
+{{- if .Agent.CanRunLongCommands }}
 **This typically takes 15-20 minutes** regardless of the number of test
-cases, since all test cases run in parallel. Before starting, confirm the
-current agent or terminal can let one command run for at least 25 minutes.
-If the current harness cannot set a long enough timeout, do not start the
-command. Ask the user to run it in an external terminal or an agent that
-supports long-running commands, then continue from the generated report.
+cases, since all test cases run in parallel. Start the command only when
+the current agent/terminal can let one command run for at least 25 minutes.
 
 ```console
 $ {{.Command.Name}} test run -o <output-dir>
@@ -44,6 +42,27 @@ Show the command output in the chat so the user can follow the progress.
 
 If the command fails or times out, report to the user and wait for
 instructions — do not retry, restart, or kill the command.
+{{- else }}
+**This typically takes 15-20 minutes** regardless of the number of test
+cases, since all test cases run in parallel.
+
+Do not start `{{.Command.Name}} test run` from this agent unless its
+harness is known to support a single command running for at least 25
+minutes. Some agents may claim they started the command with a long
+timeout while the harness still force-stops it earlier.
+
+Ask the user to run the command in a shell or another agent that supports
+long-running commands:
+
+```console
+$ {{.Command.Name}} test run -o <output-dir>
+```
+
+After the command finishes, continue from the generated report in
+`<output-dir>`. If the user reports that the command failed or timed out,
+inspect the saved report/logs and wait for instructions — do not retry,
+restart, or kill the command.
+{{- end }}
 
 ### Step 2: Check the result
 
