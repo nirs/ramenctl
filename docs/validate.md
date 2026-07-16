@@ -41,8 +41,8 @@ The command supports the following sub-commands:
 > how to create one.
 
 > [!TIP]
-> Your AI agent can look up applications and run validate commands for
-> you using the skills installed by `ramenctl init`.
+> Your AI agent can look up applications and run validate commands for you using
+> the skills installed by `ramenctl init`.
 
 ## validate application
 

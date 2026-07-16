@@ -34,8 +34,8 @@ Use "ramenctl gather [command] --help" for more information about a command.
 > how to create one.
 
 > [!TIP]
-> Your AI agent can look up applications and run gather commands for
-> you using the skills installed by `ramenctl init`.
+> Your AI agent can look up applications and run gather commands for you using
+> the skills installed by `ramenctl init`.
 
 ## gather application
 

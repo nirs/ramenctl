@@ -51,19 +51,19 @@ Other *ramenctl* commands use "config.yaml" by default.
 
 ### AI skills
 
-`ramenctl init` installs AI agent skills alongside the configuration
-file in the current directory. After running `init`, the directory is
-ready for agentic usage out of the box.
+`ramenctl init` installs AI agent skills alongside the configuration file in the
+current directory. After running `init`, the directory is ready for agentic
+usage out of the box.
 
-Use the `--agent` (`-a`) flag to install skills in the format expected
-by your AI tool (e.g. `ramenctl init -a cursor`). The default generic
-format works with any agent.
+Use the `--agent` (`-a`) flag to install skills in the format expected by your
+AI tool (e.g. `ramenctl init -a cursor`). The default generic format works with
+any agent.
 
-Running `init` again is safe. Existing skill files and context files
-are not overwritten, preserving any user modifications.
+Running `init` again is safe. Existing skill files and context files are not
+overwritten, preserving any user modifications.
 
-For more details on available skills, supported agents, and output
-directory conventions, see [AI Skills](skills.md).
+For more details on available skills, supported agents, and output directory
+conventions, see [AI Skills](skills.md).
 
 ## Creating configuration file for a ramen testing environment
 
@@ -123,8 +123,8 @@ All *ramenctl* commands require the `clusters` and `clusterSet` options. For the
 validate and gather commands, these are the only options needed.
 
 > [!TIP]
-> You can ask your AI agent to configure the options for your
-> environment using the skills installed by `ramenctl init`.
+> You can ask your AI agent to configure the options for your environment using
+> the skills installed by `ramenctl init`.
 
 > [!TIP]
 > When using a ramen testing environment, the `--envfile` option configures

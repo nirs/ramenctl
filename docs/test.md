@@ -40,8 +40,8 @@ The command supports the following sub-commands:
 > learn how to create one.
 
 > [!TIP]
-> Your AI agent can configure tests and run them for you using the
-> skills installed by `ramenctl init`.
+> Your AI agent can configure tests and run them for you using the skills
+> installed by `ramenctl init`.
 
 ## test run
 

@@ -86,9 +86,9 @@ Please see [Documentation](#documentation) to learn more.
 
 ## Agentic usage
 
-*ramenctl* is agentic-ready out of the box. Running `ramenctl init`
-installs AI skills that teach your coding assistant how to configure,
-validate, gather diagnostics, and test disaster recovery flows.
+*ramenctl* is agentic-ready out of the box. Running `ramenctl init` installs AI
+skills that teach your coding assistant how to configure, validate, gather
+diagnostics, and test disaster recovery flows.
 
 ```console
 $ ramenctl init -a cursor

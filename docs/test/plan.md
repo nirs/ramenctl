@@ -257,8 +257,8 @@ ramenctl init --envfile ../ramen/test/envs/regional-dr.yaml
 **Expected result:**
 
 - Prints the envfile path and success message.
-- `config.yaml` is populated with cluster names, storage class names and
-  distro relevant to ramen testing environment.
+- `config.yaml` is populated with cluster names, storage class names and distro
+  relevant to ramen testing environment.
 - Skills are installed in `.agents/skills/` and `AGENTS.md` is created.
 
 #### Init with --agent cursor
@@ -284,8 +284,8 @@ odf dr init -a cursor
 ✅ Init completed
 ```
 
-- Skills are installed in `.cursor/skills/` with one subdirectory per
-  subcommand (e.g., `odf-dr-init/SKILL.md`).
+- Skills are installed in `.cursor/skills/` with one subdirectory per subcommand
+  (e.g., `odf-dr-init/SKILL.md`).
 - Each skill file contains YAML frontmatter with Cursor metadata.
 - Skill content uses `odf dr` as the command name.
 - Context file `.cursor/rules/ramenctl.mdc` is created with `alwaysApply: true`.
@@ -368,8 +368,8 @@ odf dr init -a bob
 ✅ Init completed
 ```
 
-- Skills are installed in `.bob/skills/` with one subdirectory per
-  subcommand, each containing a `SKILL.md` file.
+- Skills are installed in `.bob/skills/` with one subdirectory per subcommand,
+  each containing a `SKILL.md` file.
 - File `AGENTS.md` is created with project overview.
 
 #### Init with invalid --agent
@@ -422,8 +422,8 @@ odf dr init
 
 #### Re-init is safe
 
-**Preconditions:** `odf dr init` was already run. Config file, skills,
-and context file all exist.
+**Preconditions:** `odf dr init` was already run. Config file, skills, and
+context file all exist.
 
 **Steps:**
 
@@ -447,8 +447,8 @@ odf dr init
 
 - Existing files are not overwritten, preserving user modifications.
 - Command succeeds with warnings.
-- To update skills after upgrading, delete the skills directory and
-  re-run `init`.
+- To update skills after upgrading, delete the skills directory and re-run
+  `init`.
 
 ### Validate clusters command
 
