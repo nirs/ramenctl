@@ -9,3 +9,9 @@ steps, flags, and expected output that you need to follow.
 
 Run `{{.Command.Name}} init` to create a configuration file, then use
 `validate`, `gather`, and `test` commands.
+
+## Running commands
+
+- Do not run {{.Command.Name}} commands in the background.
+- Do not retry a command that timed out — report the timeout and let
+  the user decide.
