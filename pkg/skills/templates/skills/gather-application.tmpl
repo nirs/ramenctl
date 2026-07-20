@@ -24,7 +24,8 @@ this command only collects data without validating it.
 
 ### Step 1: Look up protected applications
 
-List DRPCs on the hub using the hub kubeconfig from the {{.Command.Name}} config file:
+Read the hub kubeconfig path from `clusters.hub.kubeconfig` in the
+{{.Command.Name}} config file, then list DRPCs:
 
 ```console
 $ kubectl get drpc -A --kubeconfig <hub-kubeconfig>
