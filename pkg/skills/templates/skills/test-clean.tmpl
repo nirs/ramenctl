@@ -23,12 +23,15 @@ Delete resources created by `{{.Command.Name}} test run`.
 
 ## Workflow
 
-### Step 1: Run test clean
+### Step 1: Pick an output directory
 
-Use the same output directory and config file as the test run:
+Ask the user where to store the report. Suggest using the same output
+directory as the test run, but a different directory also works.
+
+### Step 2: Run test clean
 
 ```console
-$ {{.Command.Name}} test clean -o <output-dir>
+$ {{.Command.Name}} test clean -o <output-directory>
 ```
 
 Use `--config <file>` if the config file is not the default `config.yaml`.
@@ -36,7 +39,7 @@ Use `--config <file>` if the config file is not the default `config.yaml`.
 The command unprotects and undeploys test applications, then cleans the
 test environment (channels, namespaces).
 
-### Step 2: Check the result
+### Step 3: Check the result
 
 **On success:**
 

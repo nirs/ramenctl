@@ -22,12 +22,15 @@ in the configuration file.
 
 ## Workflow
 
-### Step 1: Run the test
+### Step 1: Pick an output directory
 
-Use `<env>/test` for the output directory, e.g., `myenv/test`.
+Ask the user where to store the report. Suggest a unique name like
+`out/test-<%Y-%m-%d-%H-%M>`, e.g., `out/test-2026-07-20-19-46`.
+
+### Step 2: Run the test
 
 ```console
-$ {{.Command.Name}} test run -o <output-dir>
+$ {{.Command.Name}} test run -o <output-directory>
 ```
 
 Use `--config <file>` if the config file is not the default `config.yaml`.
@@ -38,7 +41,7 @@ deploy, protect, failover, relocate, unprotect, undeploy.
 **This typically takes 15-20 minutes per test case.** Multiple test cases
 run in parallel.
 
-### Step 2: Check the result
+### Step 3: Check the result
 
 **On success:**
 
@@ -53,7 +56,7 @@ clusters and S3 into `test-run.data/`:
 ❌ failed (N passed, M failed, 0 skipped)
 ```
 
-### Step 3: Inspect the report
+### Step 4: Inspect the report
 
 The output directory contains:
 
@@ -68,25 +71,25 @@ Useful commands:
 Overall status:
 
 ```console
-$ yq '.status' < <output-dir>/test-run.yaml
+$ yq '.status' < <output-directory>/test-run.yaml
 ```
 
 Individual step status and durations:
 
 ```console
-$ yq '.steps[-1].items' < <output-dir>/test-run.yaml
+$ yq '.steps[-1].items' < <output-directory>/test-run.yaml
 ```
 
 Test events from the log:
 
 ```console
-$ grep -E '(INFO|ERROR).+<app-name>' <output-dir>/test-run.log
+$ grep -E '(INFO|ERROR).+<app-name>' <output-directory>/test-run.log
 ```
 
 The `test-run.yaml` report contains the config used, each test step with
 its status and duration, and a summary with pass/fail/skip counts.
 
-### Step 4: Handle failures
+### Step 5: Handle failures
 
 If the test failed:
 
@@ -98,7 +101,7 @@ If the test failed:
 4. Fix the underlying issue
 5. **Always clean up** before re-running (see {{.Command.Slug}}-test-clean skill)
 
-### Step 5: Clean up
+### Step 6: Clean up
 
 Ask the user if they want to clean up. Do not clean up without an
 explicit request — failed test resources are evidence for debugging.

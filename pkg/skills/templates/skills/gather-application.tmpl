@@ -35,12 +35,16 @@ argocd      appset-deploy-rbd      69m   dr1                dr2               Re
 Present the list and let the user choose which application to gather
 data for.
 
-### Step 2: Run gather application
+### Step 2: Pick an output directory
 
-Use `<env>/<namespace>-<app-name>` for the output directory, e.g., `myenv/myns-myapp`.
+Ask the user where to store the output. Suggest a unique name like
+`out/<drpc-namespace>-<drpc-name>-<%Y-%m-%d-%H-%M>`, e.g.,
+`out/myns-myapp-2026-07-20-19-46`.
+
+### Step 3: Run gather application
 
 ```console
-$ {{.Command.Name}} gather application --name <drpc-name> --namespace <namespace> -o <output-dir>
+$ {{.Command.Name}} gather application --name <drpc-name> --namespace <namespace> -o <output-directory>
 ```
 
 Use `--config <file>` if the config file is not the default `config.yaml`.
@@ -48,7 +52,7 @@ Use `--config <file>` if the config file is not the default `config.yaml`.
 The command takes a few seconds on local clusters and about a minute on
 remote clusters.
 
-### Step 3: Check the result
+### Step 4: Check the result
 
 On success the command ends with:
 
@@ -56,9 +60,9 @@ On success the command ends with:
 ✅ Gather completed
 ```
 
-On failure, check `<output-dir>/gather-application.log` for details.
+On failure, check `<output-directory>/gather-application.log` for details.
 
-### Step 4: Inspect gathered data
+### Step 5: Inspect gathered data
 
 The output directory contains:
 
@@ -76,7 +80,7 @@ resources. Ramen operator logs are gathered under
 `namespaces/ramen-system/pods/`.
 
 ```console
-$ tree -L3 <output-dir>/gather-application.data
+$ tree -L3 <output-directory>/gather-application.data
 gather-application.data/
 ├── dr1/
 │   ├── cluster/

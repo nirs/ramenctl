@@ -22,13 +22,13 @@ resources from all clusters, and checking that S3 endpoints are accessible.
 
 ### Step 1: Pick an output directory
 
-Ask the user where to store the report. Suggest `<env>/clusters` or
-`<env>-<date>/clusters`, e.g., `myenv/clusters`.
+Ask the user where to store the report. Suggest a unique name like
+`out/clusters-<%Y-%m-%d-%H-%M>`, e.g., `out/clusters-2026-07-20-19-46`.
 
 ### Step 2: Run validate clusters
 
 ```console
-$ {{.Command.Name}} validate clusters -o <output-dir> --interactive=false
+$ {{.Command.Name}} validate clusters -o <output-directory> --interactive=false
 ```
 
 `--interactive=false` prevents {{.Command.Name}} from opening a browser—you open the
@@ -61,7 +61,7 @@ output instead.
 
 ### Step 4: Open the HTML report
 
-If `<output-dir>/validate-clusters.html` exists, open it in the
+If `<output-directory>/validate-clusters.html` exists, open it in the
 browser using `open <path>` (macOS), `xdg-open <path>` (Linux), or
 `cmd /c start "" <path>` (Windows). Do not skip unless the user asks
 to skip.
@@ -82,13 +82,13 @@ The output directory contains:
 Read the YAML report to understand the status:
 
 ```console
-$ yq '.clustersStatus' < <output-dir>/validate-clusters.yaml
+$ yq '.clustersStatus' < <output-directory>/validate-clusters.yaml
 ```
 
 #### Gathered data structure
 
 ```console
-$ tree -L3 <output-dir>/validate-clusters.data
+$ tree -L3 <output-directory>/validate-clusters.data
 validate-clusters.data/
 ├── <cluster>/
 │   ├── cluster/

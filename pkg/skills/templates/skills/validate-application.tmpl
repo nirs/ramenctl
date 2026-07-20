@@ -38,12 +38,16 @@ Present the list and let the user choose which application to validate.
 The `NAME` and `NAMESPACE` columns map to the `--name` and `--namespace`
 flags.
 
-### Step 2: Run validate application
+### Step 2: Pick an output directory
 
-Use `<env>/<namespace>-<app-name>` for the output directory, e.g., `myenv/myns-myapp`.
+Ask the user where to store the report. Suggest a unique name like
+`out/<drpc-namespace>-<drpc-name>-<%Y-%m-%d-%H-%M>`, e.g.,
+`out/myns-myapp-2026-07-20-19-46`.
+
+### Step 3: Run validate application
 
 ```console
-$ {{.Command.Name}} validate application --name <drpc-name> --namespace <namespace> -o <output-dir> --interactive=false
+$ {{.Command.Name}} validate application --name <drpc-name> --namespace <namespace> -o <output-directory> --interactive=false
 ```
 
 `--interactive=false` prevents {{.Command.Name}} from opening a browser—you open the
@@ -54,7 +58,7 @@ Use `--config <file>` if the config file is not the default `config.yaml`.
 The command takes a few seconds on local clusters and about a minute on
 remote clusters.
 
-### Step 3: Check the result
+### Step 4: Check the result
 
 **On success:**
 
@@ -73,16 +77,16 @@ there are problems **in** that report. If the command **fails before** a
 report is written (early error), there may be no HTML—use the log and console
 output instead.
 
-### Step 4: Open the HTML report
+### Step 5: Open the HTML report
 
-If `<output-dir>/validate-application.html` exists, open it in the
+If `<output-directory>/validate-application.html` exists, open it in the
 browser using `open <path>` (macOS), `xdg-open <path>` (Linux), or
 `cmd /c start "" <path>` (Windows). Do not skip unless the user asks
 to skip.
 
 The report may not exist if the command failed before writing it.
 
-### Step 5: Inspect the report
+### Step 6: Inspect the report
 
 The output directory contains:
 
@@ -96,13 +100,13 @@ The output directory contains:
 Read the application status:
 
 ```console
-$ yq '.applicationStatus' < <output-dir>/validate-application.yaml
+$ yq '.applicationStatus' < <output-directory>/validate-application.yaml
 ```
 
 #### Gathered data structure
 
 ```console
-$ tree -L3 <output-dir>/validate-application.data
+$ tree -L3 <output-directory>/validate-application.data
 validate-application.data/
 ├── <cluster>/
 │   ├── cluster/
@@ -117,7 +121,7 @@ validate-application.data/
         └── <app-namespace>/
 ```
 
-### Step 6: Troubleshoot problems
+### Step 7: Troubleshoot problems
 
 This section is an **initial draft** — DR troubleshooting is hard and
 needs more playbooks over time (for example a future analyze skill).
@@ -134,20 +138,20 @@ Useful commands for inspecting gathered data:
 Check VRG status:
 
 ```console
-$ yq '.status' < <output-dir>/validate-application.data/<cluster>/namespaces/<ns>/ramendr.openshift.io/volumereplicationgroups/<name>.yaml
+$ yq '.status' < <output-directory>/validate-application.data/<cluster>/namespaces/<ns>/ramendr.openshift.io/volumereplicationgroups/<name>.yaml
 ```
 
 Search ramen operator logs for errors related to the app:
 
 ```console
-$ grep -E 'ERROR.+<app-name>' <output-dir>/validate-application.data/<cluster>/namespaces/ramen-system/pods/*/manager/current.log
+$ grep -E 'ERROR.+<app-name>' <output-directory>/validate-application.data/<cluster>/namespaces/ramen-system/pods/*/manager/current.log
 ```
 
-### Step 7: Suggest validate clusters
+### Step 8: Suggest validate clusters
 
 After completing the application validation, suggest also running
 `{{.Command.Name}} validate clusters` into a sibling output directory such as
-`<env>/clusters`. When they agree (or you run it for them), follow the
+`out/clusters`. When they agree (or you run it for them), follow the
 **{{.Command.Slug}}-validate-clusters** skill end to end.
 
 Why this helps: the application report covers one DRPC, its namespaces, and
